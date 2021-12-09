@@ -14,7 +14,7 @@ fun first(): Int {
         list.forEach { input ->
             val split = input.split('|')
             val right = split[1].split(' ').drop(1)
-            result += right.filter { it.length in listOf(2, 3, 4, 7) }.count()
+            result += right.count { it.length in listOf(2, 3, 4, 7) }
         }
     }
     return result
@@ -26,22 +26,28 @@ fun second(): Long {
         val list = it.toList()
         list.forEach { input ->
             val split = input.split('|')
-            val left = split[0].split(' ').dropLast(1)
+            val left = split[0].split(' ').dropLast(1).map { it.toCharArray().toSet() }
             val right = split[1].split(' ').drop(1).map { it.toCharArray().toSet() }
 
-            val x1 = left.filter { it.length == 2 }.first().toCharArray().toSet()
-            val x4 = left.filter { it.length == 4 }.first().toCharArray().toSet()
-            val x7 = left.filter { it.length == 3 }.first().toCharArray().toSet()
-            val x8 = left.filter { it.length == 7 }.first().toCharArray().toSet()
-            var len6 = left.filter { it.length == 6 }.map { it.toCharArray().toSet() }
+            val x1 = left.first { it.size == 2 }
+            val x4 = left.first { it.size == 4 }
+            val x7 = left.first { it.size == 3 }
+            val x8 = left.first { it.size == 7 }
+
+            lateinit var x0: Set<Char>
+            lateinit var x2: Set<Char>
+            lateinit var x3: Set<Char>
             lateinit var x6: Set<Char>
+            lateinit var x9: Set<Char>
+
+            var len6 = left.filter { it.size == 6 }
+            var len5 = left.filter { it.size == 5 }
+
             len6.forEach {
                 if (it.intersect(x1).size == 1)
                     x6 = it
             }
             len6 = len6.filter { it != x6 }
-            lateinit var x9: Set<Char>
-            lateinit var x0: Set<Char>
             if (len6.first().intersect(x4).size == 4) {
                 x9 = len6.first()
                 x0 = len6.drop(1).first()
@@ -49,11 +55,9 @@ fun second(): Long {
                 x0 = len6.first()
                 x9 = len6.drop(1).first()
             }
-            var len5 = left.filter { it.length == 5 }.map { it.toCharArray().toSet() }
+
             val x5 = len5.filter { (x8 - x6).first() !in it }.first()
             len5 = len5.filter { it != x5 }
-            lateinit var x2: Set<Char>
-            lateinit var x3: Set<Char>
             if (len5.first().intersect(x1).size == 2) {
                 x3 = len5.first()
                 x2 = len5.drop(1).first()

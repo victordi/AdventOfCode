@@ -11,11 +11,7 @@ private fun first(): Int {
     var result = 0
     withInput {
         val list = it.map { it.toInt() }.toList()
-        var last = list.first()
-        list.drop(1).forEach {
-            if (it > last) result++
-            last = it
-        }
+        result = list.zipWithNext().count { (a, b) -> b > a }
     }
     return result
 }
