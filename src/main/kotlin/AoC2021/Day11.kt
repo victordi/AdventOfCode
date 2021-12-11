@@ -17,22 +17,20 @@ fun first(): Long {
             list[it].toTypedArray()
         }
         for (step in 0..99) {
-            val stepVisited = mutableSetOf<Pair<Int,Int>>()
+            val visited = mutableSetOf<Pair<Int,Int>>()
             for (i in matrix.indices) {
                 for (j in matrix.indices) {
                     matrix[i][j] += 1
-                    if (matrix[i][j] > 9 && !stepVisited.contains(i to j)) {
+                    if (matrix[i][j] > 9 && i to j !in visited) {
                         val stack = LinkedList<Pair<Int,Int>>()
-                        val visited = mutableSetOf(i to j)
-                        stepVisited.add(i to j)
+                        visited.add(i to j)
                         stack.add(i to j)
                         while (stack.size > 0) {
                             val (x, y) = stack.pop()
                             for ((a, b) in matrix.getAdjacentWithCorners(x, y)) {
                                 matrix[a][b] += 1
-                                if (matrix[a][b] > 9 && !visited.contains(a to b) && !stepVisited.contains(a to b)) {
+                                if (matrix[a][b] > 9 && a to b !in visited) {
                                     visited.add(a to b)
-                                    stepVisited.add(a to b)
                                     stack.add(a to b)
                                 }
                             }
@@ -65,22 +63,20 @@ fun second(): Long {
         var step = 0L
         while(bool) {
             step++
-            val stepVisited = mutableSetOf<Pair<Int,Int>>()
+            val visited = mutableSetOf<Pair<Int,Int>>()
             for (i in matrix.indices) {
                 for (j in matrix.indices) {
-                    matrix[i][j] += 1
-                    if (matrix[i][j] > 9 && !stepVisited.contains(i to j)) {
+                    matrix[i][j]++
+                    if (matrix[i][j] > 9 && i to j !in visited) {
                         val stack = LinkedList<Pair<Int,Int>>()
-                        val visited = mutableSetOf(i to j)
                         stack.add(i to j)
-                        stepVisited.add(i to j)
+                        visited.add(i to j)
                         while (stack.size > 0) {
                             val (x, y) = stack.pop()
                             for ((a, b) in matrix.getAdjacentWithCorners(x, y)) {
                                 matrix[a][b] += 1
-                                if (matrix[a][b] > 9 && !visited.contains(a to b) && !stepVisited.contains(a to b)) {
+                                if (matrix[a][b] > 9 && a to b !in visited) {
                                     visited.add(a to b)
-                                    stepVisited.add(a to b)
                                     stack.add(a to b)
                                 }
                             }
