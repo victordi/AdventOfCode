@@ -35,6 +35,32 @@ fun <T> Array<Array<T>>.getAdjacentWithCorners(x: Int, y: Int): List<Pair<Int, I
     return result
 }
 
+fun <T> Array<Array<T>>.prettyPrint() {
+    for (i in this.indices) {
+        var line = ""
+        for (j in this[0].indices) {
+            line += this[i][j]
+            line += " "
+        }
+        println(line.dropLast(1))
+    }
+}
+
+fun <T> Array<Array<T>>.myForEach(f: (Pair<Int, Int>) -> Unit) {
+    for (i in this.indices)
+        for (j in this[0].indices)
+            f(i to j)
+}
+
+infix fun <T> Array<Array<T>>.myEquals(other: Array<Array<T>>): Boolean {
+    if (this.size != other.size) return false
+    if (this[0].size != other[0].size) return false
+    return this.foldIndexed(true) {i, acc, line ->
+        acc && line.foldIndexed(true) { j ,acc, e -> acc && e == other[i][j] }
+    }
+}
+
+
 /* Graph Stuff */
 
 /* Graph creation example:

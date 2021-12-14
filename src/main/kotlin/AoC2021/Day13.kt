@@ -1,6 +1,7 @@
 package AoC2021.day13
 
 import Input.withInput
+import prettyPrint
 
 fun main() {
     println("Result of the first part: " + first().toString())
@@ -88,15 +89,10 @@ fun second(): Long {
         val y = coords.maxOf { it.second }
 
         val graph = Array(y + 1) {
-            Array(x + 1) { '.' }
+            Array(x + 1) { ' ' }
         }
         coords.forEach { (x, y) -> graph[y][x] = '#' }
-        for (i in graph.indices) {
-            for (j in graph[0].indices) {
-                print("${graph[i][j]} ")
-            }
-            println()
-        }
+        graph.prettyPrint()
     }
     return result
 }

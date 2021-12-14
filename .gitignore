@@ -2,3 +2,5 @@
 .idea/*
 build/*
 src/main/resources/input.txt
+src/main/kotlin/AoC2020
+.gitignore
