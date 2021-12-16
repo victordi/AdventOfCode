@@ -10,6 +10,16 @@ object Input {
     }
 }
 
+fun String.toDecimal(): Long {
+    var pow2 = 1L
+    var result = 0L
+    for (c in this.reversed()) {
+        if (c == '1') result += pow2
+        pow2 *= 2
+    }
+    return result
+}
+
 /* Matrix stuff */
 
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
