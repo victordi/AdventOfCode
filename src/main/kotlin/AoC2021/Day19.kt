@@ -2,24 +2,28 @@ package AoC2021.Day19
 
 import Input.withInput
 import kotlin.math.absoluteValue
+import kotlin.system.measureTimeMillis
 
 fun main() {
-    println("Result of the first part: " + first().toString())
-    println("Result of the second part: " + second().toString())
+
+    val time = measureTimeMillis {
+        val (part1, part2) = solve()
+        println("Result of the first part: $part1")
+        println("Result of the second part: $part2")
+    }
+    println("Ran in $time ms")
 }
 
 data class Point(val x: Int, val y: Int, val z: Int) {
-    fun diff(other: Point): Point =
-        Point(
-            other.x - x,
-            other.y - y,
-            other.z - z
-        )
+    private fun diff(other: Point): Point = Point(
+        other.x - x,
+        other.y - y,
+        other.z - z
+    )
 
-    fun manhattan(other: Point): Int {
-        if (other == emptyPoint) return 0
-        return (x - other.x).absoluteValue + (y - other.y).absoluteValue + (z - other.z).absoluteValue
-    }
+    fun manhattan(other: Point) =
+        if (other == emptyPoint) 0
+        else (x - other.x).absoluteValue + (y - other.y).absoluteValue + (z - other.z).absoluteValue
 
     fun pointSet(): List<Point> =
         listOf(
@@ -59,15 +63,6 @@ data class Point(val x: Int, val y: Int, val z: Int) {
             Point(y, -z, -x),
             Point(y, z, -x),
 
-            Point(y, x, z),
-            Point(-y, x, z),
-            Point(-y, -x, z),
-            Point(-y, x, -z),
-            Point(-y, -x, -z),
-            Point(y, -x, z),
-            Point(y, -x, -z),
-            Point(y, x, -z),
-
             Point(z, x, y),
             Point(-z, x, y),
             Point(-z, -x, y),
@@ -87,85 +82,21 @@ data class Point(val x: Int, val y: Int, val z: Int) {
             Point(z, y, -x),
         )
 
-    fun difference(other: Point): List<Point> =
-        this.pointSet().map {it.diff(other)}
+    fun difference(other: Point) =
+        this.pointSet().map { it.diff(other) }
 
-    fun applySign(signs: List<Int>, other: Point): Point {
-        if (signs.size != 6) return emptyPoint
-        return Point(
+    fun applySign(signs: List<Int>, other: Point) =
+        if (signs.size != 6) emptyPoint
+        else Point(
             signs[0] * this.x - signs[1] * other.x,
             signs[2] * this.y - signs[3] * other.y,
             signs[4] * this.z - signs[5] * other.z,
         )
-    }
 }
 
 val emptyPoint = Point(-555555, -55555555, -555555)
 
-fun first(): Int {
-    var result = 0
-    withInput { input ->
-        val list = input.toList()
-        var scanner = 0
-        val points = mutableListOf<Point>()
-        val scanners = mutableListOf<List<Point>>()
-        for (line in list) {
-            if ("scanner" in line) {
-                points.clear()
-                continue
-            }
-            if (line.isBlank()) {
-                scanners.add(points.toList())
-            }
-            else {
-                val split = line.split(',').map { it.toInt() }
-                points.add(Point(split[0], split[1], split[2]))
-            }
-        }
-        scanners.add(points.toList())
-
-        val leftScanners = scanners.indices.toMutableList()
-        leftScanners.remove(0)
-        var step = 0
-        while(leftScanners.size != 0 && step < 1000) {
-            step++
-//            println(leftScanners)
-            for (idx in leftScanners) {
-                val map = mutableMapOf<Point, Int>()
-                var diff: Point = emptyPoint
-                var pointX: Point = emptyPoint
-                var pointY: Point = emptyPoint
-                var rotation = 0
-                for (point1 in scanners[idx]) {
-                    for (point2 in scanners[0]) {
-                        point1.difference(point2).forEachIndexed { index, point ->
-                            map[point] = map.getOrDefault(point, 0) + 1
-                            if (map[point]!! == 12) {
-                                rotation = index
-                                pointX = point1.pointSet()[index]
-                                pointY = point2
-                                diff = point
-                            }
-                        }
-                    }
-                }
-                if (diff != emptyPoint) {
-                    val signs = getSigns(pointX, pointY, diff)
-                    val pointsMappedto0 = scanners[idx].map {
-                        it.pointSet()[rotation].applySign(signs, diff)
-                    }
-                    scanners[0] = (scanners[0] + pointsMappedto0).toSet().toList()
-                    leftScanners.remove(idx)
-                    break
-                }
-            }
-        }
-        result = scanners[0].size
-    }
-    return result
-}
-
-fun getSigns(pointX: Point, pointY: Point, diff: Point) : List<Int> {
+fun getSigns(pointX: Point, pointY: Point, diff: Point): List<Int> {
     val result = mutableListOf<Int>()
     if (pointX.x - diff.x == pointY.x) {
         result.add(1)
@@ -211,11 +142,11 @@ fun getSigns(pointX: Point, pointY: Point, diff: Point) : List<Int> {
     return result
 }
 
-fun second(): Int {
-    var result = 0
+fun solve(): Pair<Int, Int> {
+    var part2 = 0
+    var part1 = 0
     withInput { input ->
         val list = input.toList()
-        var scanner = 0
         val points = mutableListOf<Point>()
         val scanners = mutableListOf<List<Point>>()
         for (line in list) {
@@ -225,8 +156,7 @@ fun second(): Int {
             }
             if (line.isBlank()) {
                 scanners.add(points.toList())
-            }
-            else {
+            } else {
                 val split = line.split(',').map { it.toInt() }
                 points.add(Point(split[0], split[1], split[2]))
             }
@@ -235,49 +165,49 @@ fun second(): Int {
 
         val leftScanners = scanners.indices.toMutableList()
         leftScanners.remove(0)
-        var step = 0
-        val distancesFrom0 = mutableListOf<Point>()
-        while(leftScanners.size != 0 && step < 1000) {
-            step++
-            println(leftScanners)
+        val distances = mutableListOf<Point>()
+        while (leftScanners.isNotEmpty()) {
             var diff: Point = emptyPoint
-            var pointX: Point = emptyPoint
-            var pointY: Point = emptyPoint
+            var destination: Point = emptyPoint
+            var source: Point = emptyPoint
             for (idx in leftScanners) {
                 val map = mutableMapOf<Point, Int>()
                 var rotation = 0
                 for (point1 in scanners[idx]) {
+                    if (diff != emptyPoint) continue
                     for (point2 in scanners[0]) {
+                        if (diff != emptyPoint) continue
                         point1.difference(point2).forEachIndexed { index, point ->
                             map[point] = map.getOrDefault(point, 0) + 1
                             if (map[point]!! == 12) {
                                 rotation = index
-                                pointX = point1.pointSet()[index]
-                                pointY = point2
+                                destination = point1.pointSet()[index]
+                                source = point2
                                 diff = point
                             }
                         }
                     }
                 }
                 if (diff != emptyPoint) {
-                    distancesFrom0.add(diff)
-                    val signs = getSigns(pointX, pointY, diff)
-                    val pointsMappedto0 = scanners[idx].map {
+                    distances.add(diff)
+                    val signs = getSigns(destination, source, diff)
+                    val mappedPoints = scanners[idx].map {
                         it.pointSet()[rotation].applySign(signs, diff)
                     }
-                    scanners[0] = (scanners[0] + pointsMappedto0).toSet().toList()
+                    scanners[0] = (scanners[0] + mappedPoints).toSet().toList()
                     leftScanners.remove(idx)
                     break
                 }
             }
         }
-        for (i in distancesFrom0.indices) {
-            for (j in distancesFrom0.indices) {
+        part1 = scanners[0].size
+        for (i in distances.indices) {
+            for (j in distances.indices) {
                 if (i == j) continue
-                val manhattan = distancesFrom0[i].manhattan(distancesFrom0[j])
-                if (manhattan > result) result = manhattan
+                val manhattan = distances[i].manhattan(distances[j])
+                if (manhattan > part2) part2 = manhattan
             }
         }
     }
-    return result
+    return part1 to part2
 }
