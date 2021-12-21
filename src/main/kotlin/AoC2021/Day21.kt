@@ -1,6 +1,7 @@
 package AoC2021.Day21
 
 import Input.withInput
+import modSkipZero
 
 fun main() {
     println("Result of the first part: " + first().toString())
@@ -18,11 +19,8 @@ fun Int.simulateRolls(): Pair<Int, Int> {
     return die to sump1
 }
 
-fun Int.nextDie(): Int = if (this + 1 > 100) this + 1 - 100 else this + 1
-fun Int.movePlayer(value: Int): Int = if (this + value > 10)
-    if ((this + value) % 10 == 0) 10 else (this + value) % 10
-else this + value
-
+fun Int.nextDie(): Int = (this + 1).modSkipZero(100)
+fun Int.movePlayer(value: Int): Int = (this + value).modSkipZero(10)
 
 fun first(): Int {
     var result = 0
@@ -49,56 +47,36 @@ fun first(): Int {
             if (points2 >= 1000) break
         }
 
-        result = if (points1 >= 1000) points2 * nrRolls
-        else points1 * nrRolls
+        result = nrRolls * if (points1 >= 1000) points2 else points1
     }
     return result
 }
 
-data class State(val p1: Int, val p2: Int, val points1: Int, val points2: Int, val turnp1: Boolean)
+data class State(val p1: Int, val p2: Int, val points1: Int, val points2: Int)
 
 val map = mutableMapOf<State, Pair<Long, Long>>()
 fun getWinCount(
     p1: Int,
     p2: Int,
     points1: Int,
-    points2: Int,
-    turnp1: Boolean
+    points2: Int
 ): Pair<Long, Long> {
-    if (State(p1, p2, points1, points2, turnp1) in map) return map[State(p1, p2, points1, points2, turnp1)]!!
-    if (turnp1) {
-        var (wins1, wins2) = 0L to 0L
-        allDieRolls().forEach {
-            val newP1 = p1.movePlayer(it)
-            val newPoints1 = points1 + newP1
-            if (newPoints1 >= 21) wins1++
-            else {
-                val (newWins1, newWins2) = getWinCount(
-                    newP1, p2, newPoints1, points2, false
-                )
-                wins1 += newWins1
-                wins2 += newWins2
-            }
+    if (State(p1, p2, points1, points2) in map) return map[State(p1, p2, points1, points2)]!!
+    var (wins1, wins2) = 0L to 0L
+    allDieRolls().forEach {
+        val newP1 = p1.movePlayer(it)
+        val newPoints1 = points1 + newP1
+        if (newPoints1 >= 21) wins1++
+        else {
+            val (newWins1, newWins2) = getWinCount(
+                p2, newP1, points2, newPoints1
+            )
+            wins1 += newWins2
+            wins2 += newWins1
         }
-        map[State(p1, p2, points1, points2, turnp1)] = wins1 to wins2
-        return wins1 to wins2
-    } else {
-        var (wins1, wins2) = 0L to 0L
-        allDieRolls().forEach {
-            val newP2 = p2.movePlayer(it)
-            val newPoints2 = points2 + newP2
-            if (newPoints2 >= 21) wins2++
-            else {
-                val (newWins1, newWins2) = getWinCount(
-                    p1, newP2, points1, newPoints2, true
-                )
-                wins1 += newWins1
-                wins2 += newWins2
-            }
-        }
-        map[State(p1, p2, points1, points2, turnp1)] = wins1 to wins2
-        return wins1 to wins2
     }
+    map[State(p1, p2, points1, points2)] = wins1 to wins2
+    return wins1 to wins2
 }
 
 fun allDieRolls(): List<Int> {
@@ -117,9 +95,8 @@ fun second(): Long {
         val p1 = list[0].split(": ")[1].toInt()
         val p2 = list[1].split(": ")[1].toInt()
 
-        val (x, y) = getWinCount(p1, p2, 0, 0, true)
+        val (x, y) = getWinCount(p1, p2, 0, 0)
         result = if (x > y) x else y
-
     }
     return result
 }

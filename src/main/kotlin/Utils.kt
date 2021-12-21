@@ -1,6 +1,10 @@
+import AoC2021.Day21.nextDie
 import java.io.File
 import java.nio.charset.Charset
 import java.util.*
+
+fun Int.modSkipZero(n: Int) : Int = if (this % n == 0) n else this % n
+
 
 object Input {
     private val file = File({}::class.java.getResource("/input.txt")?.file ?: "")
