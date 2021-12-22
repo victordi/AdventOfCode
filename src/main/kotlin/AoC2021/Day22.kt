@@ -49,8 +49,17 @@ fun first(): Int {
 }
 
 
-data class Cube(val xrange: IntRange, val yrange:IntRange, val zrange: IntRange, val option: String) {
+data class Cube(val xrange: IntRange, val yrange: IntRange, val zrange: IntRange, val option: String) {
     fun nrPoints(): Long = xrange.length() * yrange.length() * zrange.length()
+
+    fun intersect(other: Cube): Cube = Cube(
+        xrange.intersect(other.xrange),
+        yrange.intersect(other.yrange),
+        zrange.intersect(other.zrange),
+        option
+    )
+
+    fun isEmpty(): Boolean = xrange.isEmpty() || yrange.isEmpty() || zrange.isEmpty()
 }
 
 fun String.parse(): Cube {
@@ -73,33 +82,19 @@ fun IntRange.intersect(other: IntRange): IntRange =
     if (this.last < other.first || this.first > other.last) IntRange.EMPTY
     else min(max(this.first, other.first), other.last)..min(max(this.last, other.first), other.last)
 
-fun countOn(cube: Cube, rest: List<Cube>): Long {
-    var result = cube.nrPoints()
-
-    val intersections = mutableListOf<Cube>()
-
-    for (other in rest) {
-
-        val xr = other.xrange.intersect(cube.xrange)
-        val yr = other.yrange.intersect(cube.yrange)
-        val zr = other.zrange.intersect(cube.zrange)
-
-        if(xr.isEmpty() || yr.isEmpty() || zr.isEmpty()) continue
-
-        intersections.add(Cube(xr, yr, zr, other.option))
-    }
-
-    intersections.forEachIndexed { index, cube2 ->
-        result -= countOn(cube2, intersections.subList(index + 1, intersections.size))
-    }
-
-    return result
-}
+fun countOn(cube: Cube, rest: List<Cube>): Long =
+    rest
+        .map { it.intersect(cube) }
+        .filter { !it.isEmpty() }.let { filtered ->
+            filtered.foldIndexed(cube.nrPoints()) { index, acc, cube2 ->
+                acc - countOn(cube2, filtered.subList(index + 1, filtered.size))
+            }
+        }
 
 fun second(): Long {
     var result = 0L
     withInput { input ->
-        val list = input.map {it.parse()}.toList()
+        val list = input.map { it.parse() }.toList()
 
         list.forEachIndexed { index, cube ->
             if (cube.option == "on") {
