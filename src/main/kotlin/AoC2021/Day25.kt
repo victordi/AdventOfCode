@@ -1,52 +1,52 @@
 package AoC2021.Day25
 
 import Input.withInput
-import myEquals
-import myForEach
+import arrayForEach
 
 fun main() {
     println("Result of the first part: " + first().toString())
     println("Result of the second part: " + second())
 }
 
-fun Array<Array<Char>>.step(): Array<Array<Char>> {
-    val result = Array(this.size) { i -> Array(this[0].size) { j -> this[i][j]} }
-
+fun Array<Array<Char>>.step(): Boolean {
     val n = this.size
     val m = this[0].size
 
-    this.myForEach { (i, j) ->
+    val rightMoves = mutableListOf<Pair<Int, Int>>()
+    this.arrayForEach { (i, j) ->
         if (this[i][j] == '>' && this[i][(j + 1) % m] == '.') {
-            result[i][(j + 1) % m] = '>'
-            result[i][j] = '.'
+            rightMoves.add(i to j)
         }
     }
-
-    val copy = Array(this.size) { i -> Array(this[0].size) { j -> result[i][j]} }
-
-    copy.myForEach { (i, j) ->
-        if (copy[i][j] == 'v' && copy[(i + 1) % n][j] == '.') {
-            result[(i + 1) % n][j] = 'v'
-            result[i][j] = '.'
-        }
+    rightMoves.forEach { (i, j) ->
+        this[i][(j + 1) % m] = '>'
+        this[i][j] = '.'
     }
 
-    return result
+    val downMoves = mutableListOf<Pair<Int, Int>>()
+    this.arrayForEach { (i, j) ->
+        if (this[i][j] == 'v' && this[(i + 1) % n][j] == '.') {
+            downMoves.add(i to j)
+        }
+    }
+    downMoves.forEach { (i, j) ->
+        this[(i + 1) % n][j] = 'v'
+        this[i][j] = '.'
+    }
+
+    return rightMoves.isNotEmpty() || downMoves.isNotEmpty()
 }
 
 fun first(): Int {
     var result = 0
     withInput { input ->
         val list = input.toList()
-        var matrix = Array(list.size)  {list[it].toCharArray().toTypedArray() }
-        while(true) {
+        val matrix = Array(list.size)  {list[it].toCharArray().toTypedArray() }
+        while(matrix.step()) {
             result++
-            val new = matrix.step()
-            if (matrix.myEquals(new)) break
-            matrix = new
         }
     }
-    return result
+    return result + 1
 }
 
 fun second(): String = "Merry Christmas"

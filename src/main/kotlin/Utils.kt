@@ -1,4 +1,3 @@
-import AoC2021.Day21.nextDie
 import java.io.File
 import java.nio.charset.Charset
 import java.util.*
@@ -60,13 +59,13 @@ fun <T> Array<Array<T>>.prettyPrint() {
     }
 }
 
-fun <T> Array<Array<T>>.myForEach(f: (Pair<Int, Int>) -> Unit) {
+fun <T> Array<Array<T>>.arrayForEach(f: (Pair<Int, Int>) -> Unit) {
     for (i in this.indices)
         for (j in this[0].indices)
             f(i to j)
 }
 
-infix fun <T> Array<Array<T>>.myEquals(other: Array<Array<T>>): Boolean {
+infix fun <T> Array<Array<T>>.arrayEquals(other: Array<Array<T>>): Boolean {
     if (this.size != other.size) return false
     if (this[0].size != other[0].size) return false
     return this.foldIndexed(true) {i, acc, line ->
