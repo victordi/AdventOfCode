@@ -1,52 +1,34 @@
 package AoC2021.day2
 
 import Input.withInput
+import kotlin.IllegalArgumentException
 
-fun main() {
-    println(first())
-    println(second())
-}
-
-fun first(): Int {
-    var result = 0
-    withInput {
-        val list = it.toList()
-        var (x, y) = 0 to 0
-        list.forEach {
-            val split = it.split(' ')
-            val direction = split[0]
-            val nr = split[1].toInt()
-            when(direction) {
-                "forward" -> x += nr
-                "up" -> y -= nr
-                "down" -> y += nr
-            }
+fun main() = withInput { input ->
+    val instructions = input.toList().map { instruction ->
+        instruction.split(' ').let { split ->
+            split[0] to split[1].toInt()
         }
-        result = x * y
     }
-    return result
+    println(first(instructions))
+    println(second(instructions))
 }
 
-fun second(): Int {
-    var result = 0
-    withInput {
-        val list = it.toList()
-        var (x, y) = 0 to 0
-        var aim = 0
-        list.forEach {
-            val split = it.split(' ')
-            val direction = split[0]
-            val nr = split[1].toInt()
-            when(direction) {
-                "forward" -> {
-                    x += nr
-                    y += aim * nr
-                }
-                "up" -> aim -= nr
-                "down" -> aim += nr
-            }
+fun first(instructions: List<Pair<String, Int>>): Int = instructions
+    .fold(0 to 0) { (x, y), (direction, nr) ->
+        when (direction) {
+            "forward" -> x + nr to y
+            "up" -> x to y - nr
+            "down" -> x to y + nr
+            else -> throw IllegalArgumentException("Input list contains illegal items: $direction")
         }
-        result = x * y
-    }
-    return result
-}
+    }.let { (x, y) -> x * y }
+
+fun second(instructions: List<Pair<String, Int>>): Int = instructions
+    .fold(Triple(0, 0, 0)) { (x, y, aim), (direction, nr) ->
+        when (direction) {
+            "forward" -> Triple(x + nr, y + aim * nr, aim)
+            "up" -> Triple(x, y, aim - nr)
+            "down" -> Triple(x, y, aim + nr)
+            else -> throw IllegalArgumentException("Input list contains illegal items: $direction")
+        }
+    }.let { (x, y) -> x * y }

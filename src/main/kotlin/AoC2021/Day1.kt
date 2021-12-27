@@ -1,33 +1,22 @@
 package AoC2021.day1
 
 import Input.withInput
+import zip3
 
-fun main() {
-    println(first())
-    println(second())
+fun main() = withInput { input ->
+    val numbers = input.map { it.toInt() }.toList()
+    println(first(numbers))
+    println(second(numbers))
 }
 
-private fun first(): Int {
-    var result = 0
-    withInput {
-        val list = it.map { it.toInt() }.toList()
-        result = list.zipWithNext().count { (a, b) -> b > a }
+fun first(numbers: List<Int>): Int = numbers
+    .zipWithNext().count { (a, b) ->
+        b > a
     }
-    return result
-}
 
-private fun second(): Int {
-    var result = 0
-    withInput {
-        val list = it.map { it.toInt() }.toList()
-        var prev = list[0] + list[1] + list[2]
-        list.forEachIndexed { index, i ->
-            if ( index < list.size - 2) {
-                val sum = list[index] + list[index + 1] + list[index + 2]
-                if (sum > prev) result++
-                prev = sum
-            }
-        }
+fun Triple<Int, Int, Int>.sum(): Int = this.first + this.second + this.third
+
+fun second(numbers: List<Int>): Int = numbers
+    .zip3().zipWithNext().count { (a, b) ->
+        b.sum() > a.sum()
     }
-    return result
-}

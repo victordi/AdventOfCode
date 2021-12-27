@@ -8,17 +8,26 @@ fun Int.modSkipZero(n: Int) : Int = if (this % n == 0) n else this % n
 object Input {
     private val file = File({}::class.java.getResource("/input.txt")?.file ?: "")
 
-    fun withInput(handler: (Sequence<String>) -> Unit) {
+    fun <T> withInput(handler: (Sequence<String>) -> T): T =
         file.useLines(Charset.defaultCharset(), handler)
-    }
 }
 
-fun String.toDecimal(): Long {
-    var pow2 = 1L
-    var result = 0L
-    for (c in this.reversed()) {
-        if (c == '1') result += pow2
-        pow2 *= 2
+fun String.toDecimal(): Long = this.reversed().fold(1L to 0L) { (pow2, result), c ->
+    pow2 * 2 to  result + if (c == '1') pow2 else 0
+}.second
+
+fun <T> Iterable<T>.zip3(): List<Triple<T, T, T>> {
+    val iterator = iterator()
+    if (!iterator.hasNext()) return emptyList()
+    var current = iterator.next()
+    if (!iterator.hasNext()) return emptyList()
+    val result = mutableListOf<Triple<T, T, T>>()
+    var next = iterator.next()
+    while (iterator.hasNext()) {
+        val aux = iterator.next()
+        result.add(Triple(current, next, aux))
+        current = next
+        next = aux
     }
     return result
 }
