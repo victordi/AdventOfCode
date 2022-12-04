@@ -1,3 +1,4 @@
+import arrow.core.identity
 import java.io.File
 import java.nio.charset.Charset
 import java.util.*
@@ -11,6 +12,12 @@ object Input {
     fun <T> withInput(handler: (Sequence<String>) -> T): T =
         file.useLines(Charset.defaultCharset(), handler)
 }
+
+fun String.splitTwo(delimiter: String): Pair<String, String> =
+    splitTwo(delimiter) { it }
+
+fun <T> String.splitTwo(delimiter: String, f: (String) -> T): Pair<T, T> =
+    split(delimiter).let { f(it[0]) to f(it[1]) }
 
 fun String.toDecimal(): Long = this.reversed().fold(1L to 0L) { (pow2, result), c ->
     pow2 * 2 to  result + if (c == '1') pow2 else 0
@@ -29,6 +36,30 @@ fun <T> Iterable<T>.zip3(): List<Triple<T, T, T>> {
         current = next
         next = aux
     }
+    return result
+}
+
+fun <T> List<T>.each3(): List<Triple<T, T, T>> {
+    val result = mutableListOf<Triple<T, T, T>>()
+    for (i in indices step 3) {
+        result.add(Triple(this[i], this[i + 1], this[i + 2]))
+    }
+    return result
+}
+
+fun <T> List<T>.split(delimiter: (T) -> Boolean): List<List<T>> {
+    val result = mutableListOf<List<T>>()
+    val current = mutableListOf<T>()
+
+    this.forEach {
+        if (delimiter(it)) {
+            result.add(current.toList())
+            current.clear()
+        }
+        else current.add(it)
+    }
+    result.add(current.toList())
+
     return result
 }
 
