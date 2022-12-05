@@ -11,6 +11,8 @@ object Input {
 
     fun <T> withInput(handler: (Sequence<String>) -> T): T =
         file.useLines(Charset.defaultCharset(), handler)
+
+    fun readInput(): List<String> = file.readLines(Charset.defaultCharset())
 }
 
 fun String.splitTwo(delimiter: String): Pair<String, String> =
