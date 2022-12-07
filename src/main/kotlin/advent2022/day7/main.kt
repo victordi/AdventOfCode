@@ -1,13 +1,10 @@
 package advent2022.day7
 
 import Input.readInput
+import Leaf
+import Tree
 import arrow.core.foldLeft
 import splitTwo
-
-
-sealed class Node
-data class Leaf(val value: Long): Node()
-data class Tree(val nodes: MutableMap<String, Node>): Node()
 
 sealed class Instruction
 data class CD(val path: String): Instruction()
@@ -22,7 +19,7 @@ fun String.parseInstruction(): Instruction =
     else splitTwo(" ").let { (size, name) -> File(name, size.toLong()) }
 
 val dirSizes = mutableListOf<Long>()
-fun Tree.getSize(): Long =
+fun Tree<String, Long>.getSize(): Long =
     nodes.foldLeft(0L) { acc, (_, node) ->
         acc + when (node) {
             is Leaf -> node.value
@@ -30,19 +27,19 @@ fun Tree.getSize(): Long =
         }
     }.also { dirSizes.add(it) }
 
-fun Tree.currentDirectory(path: List<String>): Tree =
+fun Tree<String, Long>.currentDirectory(path: List<String>): Tree<String, Long> =
     path.fold(this) { acc, dirName ->
         acc.nodes[dirName]!! as Tree
     }
 
-fun newDir(): Tree = Tree(mutableMapOf())
+fun newDir(): Tree<String, Long> = Tree(mutableMapOf())
 
 fun main() {
     println(first())
     println(second())
 }
 
-fun parseInput(): Tree = run {
+fun parseInput(): Tree<String, Long> = run {
     val path = mutableListOf<String>()
     var currentNode = newDir()
     val tree = newDir()
@@ -54,8 +51,8 @@ fun parseInput(): Tree = run {
             when(instruction) {
                 is CD -> if (instruction.path == "..") path.removeLast() else path.add(instruction.path)
                 is LS -> currentNode = tree.currentDirectory(path)
-                is Dir -> currentNode.nodes[instruction.name] = newDir()
-                is File -> currentNode.nodes[instruction.name] = Leaf(instruction.size)
+                is Dir -> currentNode.add(instruction.name, newDir())
+                is File -> currentNode.add(instruction.name, Leaf(instruction.size))
             }
         }
     return tree

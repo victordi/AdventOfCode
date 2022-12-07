@@ -41,14 +41,6 @@ fun <T> Iterable<T>.zip3(): List<Triple<T, T, T>> {
     return result
 }
 
-fun <T> List<T>.each3(): List<Triple<T, T, T>> {
-    val result = mutableListOf<Triple<T, T, T>>()
-    for (i in indices step 3) {
-        result.add(Triple(this[i], this[i + 1], this[i + 2]))
-    }
-    return result
-}
-
 fun <T> List<T>.split(delimiter: (T) -> Boolean): List<List<T>> {
     val result = mutableListOf<List<T>>()
     val current = mutableListOf<T>()
@@ -204,3 +196,12 @@ fun Graph<Int>.dijkstra(src: Int): List<Int> {
 }
 
 //TODO() : A* implementation
+
+/* Tree stuff */
+sealed class Node<out T, V>
+data class Leaf<V>(val value: V): Node<Nothing, V>()
+data class Tree<T, V>(val nodes: MutableMap<T, Node<T, V>>): Node<T, V>() {
+    fun add(key: T, value: Node<T, V>) {
+        nodes[key] = value
+    }
+}

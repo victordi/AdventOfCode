@@ -1,7 +1,6 @@
 package advent2022.day3
 
 import Input.withInput
-import each3
 
 fun Char.priority(): Int = if (isLowerCase()) code - 96 else code - 38
 
@@ -26,7 +25,7 @@ fun second(): Int = withInput { input ->
     input
         .toList()
         .map { it.toCharArray().toSet() }
-        .each3()
+        .chunked(3)
         .forEach { (elf1, elf2, elf3) ->
             val common = elf1.intersect(elf2).intersect(elf3).first()
             priority += common.priority()
