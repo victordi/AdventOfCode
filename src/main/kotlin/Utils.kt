@@ -3,8 +3,11 @@ import java.io.File
 import java.nio.charset.Charset
 import java.util.*
 
-fun Int.modSkipZero(n: Int) : Int = if (this % n == 0) n else this % n
+sealed class AoCPart
+object Part1: AoCPart()
+object Part2: AoCPart()
 
+fun Int.modSkipZero(n: Int) : Int = if (this % n == 0) n else this % n
 
 object Input {
     private val file = File({}::class.java.getResource("/input.txt")?.file ?: "")
