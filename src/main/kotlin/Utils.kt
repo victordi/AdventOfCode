@@ -1,3 +1,4 @@
+import advent2022.day9.Point
 import arrow.core.identity
 import java.io.File
 import java.nio.charset.Charset
@@ -62,10 +63,12 @@ fun <T> List<T>.split(delimiter: (T) -> Boolean): List<List<T>> {
 
 /* Matrix stuff */
 
+fun <T> Array<Array<T>>.getAdjacent(point: Point): List<Pair<Int, Int>> = getAdjacent(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
     val result = mutableListOf<Pair<Int, Int>>()
-    val n = this.size - 1
-    if (x < n) result.add(x + 1 to y)
+    val n = this[0].size - 1
+    val m = this.size - 1
+    if (x < m) result.add(x + 1 to y)
     if (x > 0) result.add(x - 1 to y)
     if (y < n) result.add(x to y + 1)
     if (y > 0) result.add(x to y - 1)
