@@ -10,7 +10,7 @@ import prettyPrint
 fun main() {
     val (graph, start, end) = parseInput()
     println(first(graph, start, end))
-    println(second(graph, end))
+    println(optimizedSecond(graph, start, end))
 }
 
 
@@ -63,4 +63,31 @@ fun second(graph: Graph<Int>, end: Point): Int = run {
     val points = mutableListOf(Int.MAX_VALUE)
     graph.arrayForEach { start -> if (start != end) points.add(first(graph, start, end)) }
     points.min()
+}
+
+fun optimizedSecond(graph: Graph<Int>, start: Point, end: Point): Int = run {
+    val queue = mutableListOf(start to 0)
+    val visited = mutableListOf(start to 0)
+    graph.arrayForEach { (x, y) ->
+        if (graph[x][y] == 0) {
+            queue.add((x to y) to 0)
+            visited.add((x to y) to 0)
+        }
+    }
+    while(queue.isNotEmpty()) {
+        queue.sortBy { it.second }
+        val (next, steps) = queue.removeFirst()
+        if (next == end) return steps
+        val currentHeight = graph[next.first][next.second]
+        graph
+            .getAdjacent(next)
+            .sortedByDescending { graph[it.first][it.second] }
+            .forEach { (x, y) ->
+                if (graph[x][y] <= currentHeight + 1 && steps + 1 < visited.score(x to y)) {
+                    queue.add((x to y) to steps + 1)
+                    visited.visit((x to y), steps + 1)
+                }
+            }
+    }
+    Int.MAX_VALUE
 }
