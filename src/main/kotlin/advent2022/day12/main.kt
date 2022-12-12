@@ -36,6 +36,7 @@ fun MutableList<Pair<Point, Int>>.visit(point: Point, steps: Int) = run {
 }
 
 fun first(graph: Graph<Int>, start: Point, end: Point): Int = run {
+    val prev = graph[start.first][start.second]
     graph[start.first][start.second] = 0
     val queue = mutableListOf(start to 0)
     val visited = mutableListOf(start to 0)
@@ -54,6 +55,7 @@ fun first(graph: Graph<Int>, start: Point, end: Point): Int = run {
                 }
             }
     }
+    graph[start.first][start.second] = prev
     Int.MAX_VALUE
 }
 
