@@ -1,7 +1,7 @@
 package advent2022.day1
 
 import Input.withInput
-import split
+import splitList
 
 fun main() {
     println(first())
@@ -11,7 +11,7 @@ fun main() {
 fun first(): Int = withInput { input ->
     input
         .toList()
-        .split { it.isEmpty() }
+        .splitList { it.isEmpty() }
         .map { elf -> elf.sumOf { it.toInt() } }
         .max()
 }
@@ -19,7 +19,7 @@ fun first(): Int = withInput { input ->
 fun second(): Int = withInput { input ->
     input
         .toList()
-        .split { it.isEmpty() }
+        .splitList { it.isEmpty() }
         .map { elf -> elf.sumOf { it.toInt() } }
         .sortedDescending()
         .take(3)

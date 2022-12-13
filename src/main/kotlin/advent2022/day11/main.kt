@@ -4,7 +4,7 @@ import AoCPart
 import Input.readInput
 import Part1
 import Part2
-import split
+import splitList
 
 fun main() {
     println(solve(20, Part1))
@@ -30,7 +30,7 @@ data class Monkey(
 
 fun parseInput(part: AoCPart): MutableList<Monkey> {
     val monkeys = mutableListOf<Monkey>()
-    val input = readInput().split { it.isEmpty() }
+    val input = readInput().splitList { it.isEmpty() }
     input.map { it.drop(1) }.forEach { monkeyDetails ->
         val items = monkeyDetails[0].trimIndent().removePrefix("Starting items: ").filter { it != ' ' }.split(",").map { it.toLong() }
         val (op, nr) = monkeyDetails[1].trimIndent().removePrefix("Operation: new = old ").filter { it != ' ' }.let {

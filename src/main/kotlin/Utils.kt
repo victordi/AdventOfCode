@@ -1,5 +1,3 @@
-import advent2022.day9.Point
-import arrow.core.identity
 import java.io.File
 import java.nio.charset.Charset
 import java.util.*
@@ -45,7 +43,7 @@ fun <T> Iterable<T>.zip3(): List<Triple<T, T, T>> {
     return result
 }
 
-fun <T> List<T>.split(delimiter: (T) -> Boolean): List<List<T>> {
+fun <T> List<T>.splitList(delimiter: (T) -> Boolean): List<List<T>> {
     val result = mutableListOf<List<T>>()
     val current = mutableListOf<T>()
 
@@ -62,7 +60,7 @@ fun <T> List<T>.split(delimiter: (T) -> Boolean): List<List<T>> {
 }
 
 /* Matrix stuff */
-
+typealias Point = Pair<Int, Int>
 fun <T> Array<Array<T>>.getAdjacent(point: Point): List<Pair<Int, Int>> = getAdjacent(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
     val result = mutableListOf<Pair<Int, Int>>()
