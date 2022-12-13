@@ -9,7 +9,7 @@ fun main() {
 }
 
 fun String.splitLists(): List<String> {
-    val arr = """\[[^]]*]*|[0-9]*""".toRegex().findAll(this.drop(1).dropLast(1)).map { it.value }.toList()
+    val arr = """\[(.*?)]|[0-9]*""".toRegex().findAll(this.drop(1).dropLast(1)).map { it.value }.toList()
     return arr.filter { !it.isBlank() }
 }
 
@@ -17,17 +17,13 @@ fun checkOrder(first: String, second: String): Int {
     val firstAsInt = first.toIntOrNull()
     val secondAsInt = second.toIntOrNull()
     if (firstAsInt != null && secondAsInt != null) {
-        return if (firstAsInt < secondAsInt) 1
-        else if (firstAsInt > secondAsInt) -1
-        else 0
+        if (firstAsInt < secondAsInt) return 1
+        if (firstAsInt > secondAsInt) return -1
+        return 0
     }
 
-    if (firstAsInt != null) {
-        return checkOrder("[$first]", second)
-    }
-    if (secondAsInt != null) {
-        return checkOrder(first , "[$second]")
-    }
+    if (firstAsInt != null) return checkOrder("[$firstAsInt]", second)
+    if (secondAsInt != null) return checkOrder(first , "[$secondAsInt]")
 
     val splitFirst = first.splitLists()
     val splitSecond = second.splitLists()
@@ -56,7 +52,7 @@ fun second(): Int = run {
     val input = readInput().filter { it.isNotBlank() }.toMutableList()
     input.add("[[2]]")
     input.add("[[6]]")
-    input.sortWith(Comparator { o1, o2 -> -1 * checkOrder(o1, o2) })
+    input.sortWith { o1, o2 -> -1 * checkOrder(o1, o2) }
     (input.indexOf("[[2]]") + 1) * (input.indexOf("[[6]]") + 1)
 }
 
