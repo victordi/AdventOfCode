@@ -11,12 +11,12 @@ lateinit var yArea: IntRange
 val startingPositions = mutableSetOf<Pair<Int, Int>>()
 
 fun main() {
-    readInput()
+    parseInput()
     println("Result of the first part: " + first().toString())
     println("Result of the second part: " + second().toString())
 }
 
-fun readInput() {
+fun parseInput() {
     withInput { input ->
         val line = input.first()
         val xs = line.split("x=")[1].split(',')[0].split("..").map { it.toInt() }
