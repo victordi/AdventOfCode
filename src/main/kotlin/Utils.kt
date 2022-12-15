@@ -1,4 +1,5 @@
 import java.io.File
+import kotlin.math.abs
 import java.nio.charset.Charset
 import java.util.*
 
@@ -61,6 +62,7 @@ fun <T> List<T>.splitList(delimiter: (T) -> Boolean): List<List<T>> {
 
 /* Matrix stuff */
 typealias Point = Pair<Int, Int>
+fun manhattanDistance(p1: Point, p2: Point) = abs(p1.first - p2.first) + abs(p1.second - p2.second)
 fun <T> Array<Array<T>>.getAdjacent(point: Point): List<Pair<Int, Int>> = getAdjacent(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
     val result = mutableListOf<Pair<Int, Int>>()
