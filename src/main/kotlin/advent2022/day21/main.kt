@@ -26,7 +26,7 @@ fun main() {
 }
 
 fun first(): Long = run {
-    repeat(38) { cnt ->
+    repeat(100_000) { cnt ->
         for (monkey in monkeys) {
             if (monkey.x in numbers && monkey.y in numbers) {
                 val number = when (monkey.op) {
@@ -37,18 +37,32 @@ fun first(): Long = run {
                     else -> throw IllegalArgumentException("Unsupported op: ${monkey.op}")
                 }
                 numbers[monkey.name] = number
-                if (monkey.name == "root") return number.also { println(cnt) }
+                if (monkey.name == "root") return number
             }
         }
     }
     -1
 }
 
+fun Char.inverseOp(): Char = when (this) {
+    '+' -> '-'
+    '-' -> '+'
+    '*' -> '/'
+    '/' -> '*'
+    else -> throw IllegalArgumentException("Unsupported op: $this")
+}
+
+fun Long.applyOp(op: Char, other: Long): Long = when(op.inverseOp()) {
+    '+' -> this + other
+    '-' -> this - other
+    '*' -> this * other
+    '/' -> this / other
+    else -> throw IllegalArgumentException("Unsupported op: $this")
+}
+
 fun second(): Long = run { // root : 21973580688943 == lccz
     numbers.clear()
     val monkeys = parseInput()
-    val current = LinkedList<String>()
-    current.add("lccz")
     numbers.remove("humn")
     repeat(38) { cnt ->
         for (monkey in monkeys) {
@@ -64,41 +78,18 @@ fun second(): Long = run { // root : 21973580688943 == lccz
             }
         }
     }
-    var op = ""
+    val current = LinkedList<String>()
+    current.add("lccz")
+    var humanRemainder = 21973580688943L
     while(current.isNotEmpty()) {
         val name = current.pop()
         if (name == "humn") continue
         val monkey = monkeys.find { it.name == name }!!
-        val x = numbers[monkey.x]?.toString() ?: monkey.x.also { current.add(monkey.x) }
-        val y = numbers[monkey.y]?.toString() ?: monkey.y.also { current.add(monkey.y) }
-        op += "${monkey.name} = $x ${monkey.op} $y | "
+        humanRemainder = if (monkey.x in numbers) {
+            current.add(monkey.y)
+            if (monkey.op == '-') numbers[monkey.x]!!.applyOp('+', humanRemainder)
+            else humanRemainder.applyOp(monkey.op, numbers[monkey.x]!!)
+        } else humanRemainder.applyOp(monkey.op, numbers[monkey.y]!!).also { current.add(monkey.x) }
     }
-    println(op)
-
-    val bnct = 21973580688943L * 4
-    val cvhv = bnct - 358
-    val gwst = cvhv / 2
-    val dstd = 101381294475907L - gwst
-    val dqcj = dstd / 4
-    val mnmb = dqcj + 483
-    val zcnc = mnmb * 3
-    val njdc = zcnc - 553
-    val zgnz = njdc / 2
-    val srrz = zgnz + 136
-    val fbrw = srrz * 3
-    val zffj = fbrw - 187
-    val wtcg = zffj / 2
-    val gtls = wtcg - 781
-    val bdns = gtls * 3
-    val rvtr = bdns - 74
-    val qfzq = rvtr + 155
-    val vzbp = qfzq / 18
-    val lrmw = vzbp - 204
-    val zftv = lrmw * 5
-    val dhdf = zftv + 244
-    val jqvq = dhdf * 2
-    val cwrj = jqvq - 222
-    val humn = ((((((((((((((((((((cwrj / 2 + 825 ) * 3 + 993 ) / 2 - 628 ) * 3 + 227 ) / 4 - 453 ) * 2 - 830 ) / 2 + 965 ) / 3 - 567 ) * 4 + 181 ) * 2 + 30 ) / 2 - 8) / 16 - 291) * 3 + 78) * 9 - 114) / 3 + 978) * 5 + 501) / 2 - 52) / 3 + 304) * 3 - 670) * 2 - 548) / 29 + 375
-
-    humn
+    humanRemainder
 }
