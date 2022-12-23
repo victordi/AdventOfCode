@@ -1,5 +1,8 @@
 package advent2022.day22
 
+import AoCPart
+import Part1
+import Part2
 import Point
 import java.util.regex.Pattern
 
@@ -13,9 +16,21 @@ val map = Array(n) {
 }
 val startY = map[0].indexOfFirst { it == '.' }
 
+fun Point.getFace(): Char =
+    if (this.first < 50) {
+        if (this.second in (50 until 100)) 'A'
+        else  'B'
+    }
+    else if (this.first in (50 until 100)) 'C'
+    else if (this.first in (100 until 150)) {
+        if (this.second in (50 until 100)) 'E'
+        else 'D'
+    }
+    else 'F'
+
 fun main() {
-    println(first())
-    println(second())
+    println(solve(Part1))
+    println(solve(Part2))
 }
 
 sealed class Direction {
@@ -42,39 +57,25 @@ object Up : Direction() {
         else x to point.second
     }
 
-    override fun wrapAroundP2(point: Point): Pair<Point, Direction> {
-        val face = point.getFace()
-        return when (face) {
+    override fun wrapAroundP2(point: Point): Pair<Point, Direction> = run {
+        val (newPoint, direction) = when (point.getFace()) {
             'C', 'E', 'F' -> wrapAround(point) to Up
             'A' -> {
-                if (point.first != 0) {
-                    wrapAround(point) to Up
-                } else { // wrap to F
-                    val (newX, newY) = Point(150 + (point.second - 50), 0)
-                    if (map[newX][newY] == '#') point to Up
-                    else Point(newX, newY) to Right
-                }
+                if (point.first != 0) wrapAround(point) to Up
+                else Point(100 + point.second, 0) to Right // wrap to F
             }
             'B' -> {
-                if (point.first != 0) {
-                    wrapAround(point) to Up
-                } else { // wrap to F
-                    val (newX, newY) = Point(199, point.second - 100)
-                    if (map[newX][newY] == '#') point to Up
-                    else Point(newX, newY) to Up
-                }
+                if (point.first != 0) wrapAround(point) to Up
+                else Point(199, point.second - 100) to Up // wrap to F
             }
             'D' -> {
-                if (point.first != 100) {
-                    wrapAround(point) to Up
-                } else { // wrap to C
-                    val (newX, newY) = Point(50 + point.second, 50)
-                    if (map[newX][newY] == '#') point to Up
-                    else Point(newX, newY) to Right
-                }
+                if (point.first != 100) wrapAround(point) to Up
+                else Point(50 + point.second, 50) to Right // wrap to C
             }
             else -> throw IllegalArgumentException("Wrong face")
         }
+        if (map[newPoint.first][newPoint.second] == '#') point to this
+        else newPoint to direction
     }
 
     override fun score(): Int  = 3
@@ -99,48 +100,29 @@ object Right : Direction() {
 
     override fun score(): Int  = 0
 
-    override fun wrapAroundP2(point: Point): Pair<Point, Direction> {
-        val face = point.getFace()
-        return when (face) {
+    override fun wrapAroundP2(point: Point): Pair<Point, Direction> = run {
+        val (newPoint, direction) =  when (point.getFace()) {
             'A', 'D' -> wrapAround(point) to Right
             'B' -> {
-                if (point.second != 149) {
-                    wrapAround(point) to Right
-                } else { // wrap to E
-                    val (newX, newY) = Point(100 + point.first, 99)
-                    if (map[newX][newY] == '#') point to Right
-                    else Point(newX, newY) to Left
-                }
+                if (point.second != 149) wrapAround(point) to Right
+                else Point(100 + point.first, 99) to Left // wrap to E
             }
             'C' -> {
-                if (point.second != 99) {
-                    wrapAround(point) to Right
-                } else { // wrap to B
-                    val (newX, newY) = Point(49, point.first + 50)
-                    if (map[newX][newY] == '#') point to Right
-                    else Point(newX, newY) to Up
-                }
+                if (point.second != 99) wrapAround(point) to Right
+                else Point(49, point.first + 50) to Up // wrap to B
             }
             'E' -> {
-                if (point.second != 99) {
-                    wrapAround(point) to Right
-                } else { // wrap to B
-                    val (newX, newY) = Point(149 - point.first, 149)
-                    if (map[newX][newY] == '#') point to Right
-                    else Point(newX, newY) to Left
-                }
+                if (point.second != 99) wrapAround(point) to Right
+                else Point(149 - point.first, 149) to Left // wrap to B
             }
             'F' -> {
-                if (point.second != 49) {
-                    wrapAround(point) to Right
-                } else { // wrap to C
-                    val (newX, newY) = Point(149, point.first - 100)
-                    if (map[newX][newY] == '#') point to Right
-                    else Point(newX, newY) to Up
-                }
+                if (point.second != 49) wrapAround(point) to Right
+                else Point(149, point.first - 100) to Up // wrap to C
             }
             else -> throw IllegalArgumentException("Wrong face")
         }
+        if (map[newPoint.first][newPoint.second] == '#') point to this
+        else newPoint to direction
     }
 }
 
@@ -163,39 +145,25 @@ object Down : Direction() {
 
     override fun score(): Int  = 1
 
-    override fun wrapAroundP2(point: Point): Pair<Point, Direction> {
-        val face = point.getFace()
-        return when (face) {
+    override fun wrapAroundP2(point: Point): Pair<Point, Direction> = run {
+        val (newPoint, direction) = when (point.getFace()) {
             'A', 'C', 'D' -> wrapAround(point) to Down
             'B' -> {
-                if (point.first != 49) {
-                    wrapAround(point) to Down
-                } else { // wrap to C
-                    val (newX, newY) = Point(point.second - 50, 99)
-                    if (map[newX][newY] == '#') point to Down
-                    else Point(newX, newY) to Left
-                }
+                if (point.first != 49) wrapAround(point) to Down
+                else Point(point.second - 50, 99) to Left // wrap to C
             }
             'E' -> {
-                if (point.first != 149) {
-                    wrapAround(point) to Down
-                } else { // wrap to F
-                    val (newX, newY) = Point(point.second + 100, 49)
-                    if (map[newX][newY] == '#') point to Down
-                    else Point(newX, newY) to Left
-                }
+                if (point.first != 149) wrapAround(point) to Down
+                else Point(point.second + 100, 49) to Left // wrap to F
             }
             'F' -> {
-                if (point.first != 199) {
-                    wrapAround(point) to Down
-                } else { // wrap to C
-                    val (newX, newY) = Point(0, point.second + 100)
-                    if (map[newX][newY] == '#') point to Down
-                    else Point(newX, newY) to Down
-                }
+                if (point.first != 199) wrapAround(point) to Down
+                else Point(0, point.second + 100) to Down // wrap to C
             }
             else -> throw IllegalArgumentException("Wrong face")
         }
+        if (map[newPoint.first][newPoint.second] == '#') point to this
+        else newPoint to direction
     }
 }
 
@@ -218,58 +186,46 @@ object Left : Direction() {
 
     override fun score(): Int  = 2
 
-    override fun wrapAroundP2(point: Point): Pair<Point, Direction> {
-        val face = point.getFace()
-        return when (face) {
+    override fun wrapAroundP2(point: Point): Pair<Point, Direction> = run {
+        val (newPoint, direction) = when (point.getFace()) {
             'B', 'E' -> wrapAround(point) to Left
             'A' -> {
-                if (point.second != 50) {
-                    wrapAround(point) to Left
-                } else { // wrap to D
-                    val (newX, newY) = Point(149 - point.first, 0)
-                    if (map[newX][newY] == '#') point to Left
-                    else Point(newX, newY) to Right
-                }
+                if (point.second != 50) wrapAround(point) to Left
+                else Point(149 - point.first, 0) to Right // wrap to D
             }
             'C' -> {
-                if (point.second != 50) {
-                    wrapAround(point) to Left
-                } else { // wrap to D
-                    val (newX, newY) = Point(100, point.first - 50)
-                    if (map[newX][newY] == '#') point to Left
-                    else Point(newX, newY) to Down
-                }
+                if (point.second != 50) wrapAround(point) to Left
+                else Point(100, point.first - 50) to Down // wrap to D
             }
             'D' -> {
-                if (point.second != 0) {
-                    wrapAround(point) to Left
-                } else { // wrap to A
-                    val (newX, newY) = Point(149 - point.first, 50)
-                    if (map[newX][newY] == '#') point to Left
-                    else Point(newX, newY) to Right
-                }
+                if (point.second != 0) wrapAround(point) to Left
+                else Point(149 - point.first, 50) to Right // wrap to A
             }
             'F' -> {
-                if (point.second != 0) {
-                    wrapAround(point) to Left
-                } else { // wrap to !
-                    val (newX, newY) = Point(0, point.first - 100)
-                    if (map[newX][newY] == '#') point to Left
-                    else Point(newX, newY) to Down
-                }
+                if (point.second != 0) wrapAround(point) to Left
+                else Point(0, point.first - 100) to Down // wrap to A
             }
             else -> throw IllegalArgumentException("Wrong face")
         }
+        if (map[newPoint.first][newPoint.second] == '#') point to this
+        else newPoint to direction
     }
 }
 
-fun first(): Int = run {
+fun solve(part: AoCPart): Int = run {
     var current = 0 to startY
     var direction: Direction = Right
     val steps = lines.last().split(Pattern.compile("R|L")).map { it.toInt() }
     val rotations = lines.last().filter { !it.isDigit() }.toCharArray().toTypedArray().plus('R')
     for (i in steps.indices) {
-        repeat(steps[i]) { current = direction.wrapAround(current) }
+        repeat(steps[i]) {
+            if (part == Part1) current = direction.wrapAround(current)
+            if (part == Part2) {
+                val result = direction.wrapAroundP2(current)
+                current = result.first
+                direction = result.second
+            }
+        }
         direction = direction.rotate(rotations[i])
     }
 
@@ -286,33 +242,3 @@ fun first(): Int = run {
     FF
     FF
  */
-
-fun Point.getFace(): Char =
-    if (this.first < 50) {
-        if (this.second in (50 until 100)) 'A'
-        else  'B'
-    }
-    else if (this.first in (50 until 100)) 'C'
-    else if (this.first in (100 until 150)) {
-        if (this.second in (50 until 100)) 'E'
-        else 'D'
-    }
-    else 'F'
-
-
-fun second(): Int = run {
-    var current = 0 to startY
-    var direction: Direction = Right
-    val steps = lines.last().split(Pattern.compile("R|L")).map { it.toInt() }
-    val rotations = lines.last().filter { !it.isDigit() }.toCharArray().toTypedArray().plus('R')
-    for (i in steps.indices) {
-        repeat(steps[i]) {
-            val result = direction.wrapAroundP2(current)
-            current = result.first
-            direction = result.second
-        }
-        direction = direction.rotate(rotations[i])
-    }
-
-    (current.first + 1) * 1000 + (current.second + 1) * 4 + direction.rotate('L').score()
-}
