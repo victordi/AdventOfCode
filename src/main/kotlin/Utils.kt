@@ -7,6 +7,20 @@ sealed class AoCPart
 object Part1: AoCPart()
 object Part2: AoCPart()
 
+enum class Direction(val diff: Point) {
+    North(-1 to 0), South(1 to 0), East(0 to 1), West(0 to -1)
+}
+
+fun Char.toDirection() = when(this) {
+    '^' -> Direction.North
+    'v' -> Direction.South
+    '>' -> Direction.East
+    '<' -> Direction.West
+    else -> throw IllegalArgumentException("Not a valid direction $this")
+}
+
+fun Point.move(direction: Direction): Point = this + direction.diff
+
 fun Int.modSkipZero(n: Int) : Int = if (this % n == 0) n else this % n
 
 object Input {
@@ -60,9 +74,24 @@ fun <T> List<T>.splitList(delimiter: (T) -> Boolean): List<List<T>> {
     return result
 }
 
+fun <T> List<T>.every(n: Int): List<List<T>> {
+    val result = mutableListOf<List<T>>()
+
+    for (i in this.indices step n) {
+        val current = mutableListOf<T>()
+        for (j in 0 until n) {
+            current += this[i + j]
+        }
+        result.add(current.toList())
+    }
+
+    return result
+}
+
 /* Matrix stuff */
 typealias Point = Pair<Int, Int>
 fun manhattanDistance(p1: Point, p2: Point) = abs(p1.first - p2.first) + abs(p1.second - p2.second)
+operator fun Point.plus(other: Point): Point = Pair(this.first + other.first, this.second + other.second)
 fun <T> Array<Array<T>>.getAdjacent(point: Point): List<Pair<Int, Int>> = getAdjacent(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
     val result = mutableListOf<Pair<Int, Int>>()

@@ -7,6 +7,14 @@ fun main() {
     println(second())
 }
 
-fun first(): Int = TODO()
+fun first(): Int = lines.first().count { it == '(' } - lines.first().count { it == ')' }
 
-fun second(): Int = TODO()
+fun second(): Int = run {
+    var floor = 0
+    lines.first().forEachIndexed { index, c ->
+        if (c == '(') floor++
+        else floor--
+        if (floor == -1) return index + 1
+    }
+    -1
+}
