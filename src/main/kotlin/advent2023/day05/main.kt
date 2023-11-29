@@ -8,9 +8,9 @@ fun main() {
 }
 
 fun first(): Int = withInput { input ->
-  TODO()
+  0
 }
 
 fun second(): Int = withInput { input ->
-  TODO()
+  0
 }
