@@ -104,6 +104,8 @@ fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
     return result
 }
 
+fun <T> Array<Array<T>>.getAdjacentWithCorners(point: Point): List<Pair<Int, Int>> =
+    getAdjacentWithCorners(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacentWithCorners(x: Int, y: Int): List<Pair<Int, Int>> {
     val result = mutableListOf<Pair<Int, Int>>()
     for (x_fact in -1..1) {
