@@ -242,3 +242,18 @@ data class Tree<T, V>(val nodes: MutableMap<T, Node<T, V>>): Node<T, V>() {
         nodes[key] = value
     }
 }
+
+fun lcm(a: Int, b: Int): Int = lcm(a.toLong(), b.toLong()).toInt()
+
+fun lcm(a: Long, b: Long): Long {
+    val larger = if (a > b) a else b
+    val maxLcm = a * b
+    var lcm = larger
+    while (lcm <= maxLcm) {
+        if (lcm % a == 0L && lcm % b == 0L) {
+            return lcm
+        }
+        lcm += larger
+    }
+    return maxLcm
+}
