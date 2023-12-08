@@ -7,14 +7,16 @@ import Part2
 import lcm
 
 val map = withInput { input ->
-  input.drop(2).map {
-    val (key, nodes) = it.split(" = ")
-    val (left, right) = nodes.drop(1).dropLast(1).filter { it != ' ' }.split(",")
+  input.drop(2).map { path ->
+    val (key, left, right) = Regex("[A-Z]{3}")
+      .findAll(path)
+      .map { it.value }
+      .toList()
     key to (left to right)
   }.toMap()
 }
 
-val steps = withInput { it.first().toCharArray().toList() }
+val steps = withInput { it.first().toList() }
 
 fun main() {
   println(first())
@@ -28,18 +30,19 @@ fun second(): Long = map.keys
   .map { it.getSteps(Part2).toLong() }
   .fold(1L) { acc, step -> lcm(acc, step) }
 
-fun String.getSteps(part: AoCPart): Int = run {
-  val (steps, node, isFound) = steps.fold(Triple(0, this, false)) { (step, node, isFound), direction ->
-    if (isFound) Triple(step, node, true)
-    else if (part == Part2 && node.last() == 'Z') Triple(step, node, true)
-    else if (part == Part1 && node == "ZZZ") Triple(step, node, true)
-    else {
-      val next = if (direction == 'L') map[node]!!.first
-      else map[node]!!.second
-      Triple(step + 1, next, false)
+fun String.getSteps(part: AoCPart): Int = steps.size +
+  steps
+    .foldIndexed(this) { idx, node, direction ->
+      if (node.isFinalNode(part)) return idx
+      map.nextNode(node, direction)
     }
-  }
+    .getSteps(part)
 
-  if (isFound) steps
-  else steps + node.getSteps(part)
+fun String.isFinalNode(part: AoCPart): Boolean = when (part) {
+  Part1 -> equals("ZZZ")
+  Part2 -> last() == 'Z'
 }
+
+fun Map<String, Pair<String, String>>.nextNode(node: String, direction: Char): String =
+  if (direction == 'L') get(node)!!.first
+  else get(node)!!.second
