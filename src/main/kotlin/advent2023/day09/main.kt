@@ -1,16 +1,26 @@
 package advent2023.day09
 
+import AoCPart
 import Input.withInput
+import Part1
+import Part2
 
 fun main() {
-  println(first())
-  println(second())
+  val entries = withInput { input -> input.toList().map { it.split(" ").map { nr -> nr.toInt() } } }
+  println(entries.sumOf { it.getLast(Part1) })
+  println(entries.sumOf { it.getLast(Part2) })
 }
 
-fun first(): Int = withInput { input ->
-  0
-}
-
-fun second(): Int = withInput { input ->
-  0
+fun List<Int>.getLast(part: AoCPart): Int {
+  val sequences = mutableListOf(this)
+  while (true) {
+    if (sequences.last().all { it == 0 }) break
+    sequences.add(sequences.last().zipWithNext { a, b -> b - a })
+  }
+  return sequences.reversed().drop(1).fold(0) { acc, seq ->
+    when(part) {
+      Part1 -> seq.last() + acc
+      Part2 -> seq.first() - acc
+    }
+  }
 }
