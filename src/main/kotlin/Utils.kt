@@ -143,38 +143,51 @@ infix fun <T> Array<Array<T>>.arrayEquals(other: Array<Array<T>>): Boolean {
   if (this.size != other.size) return false
   if (this[0].size != other[0].size) return false
   return this.foldIndexed(true) { i, acc, line ->
-    acc && line.foldIndexed(true) { j, acc, e -> acc && e == other[i][j] }
+    acc && line.foldIndexed(true) { j, acc2, e -> acc2 && e == other[i][j] }
   }
 }
 
-data class Grid<T>(val grid: List<List<T>>, val width: Int, val height: Int) {
+class Grid<T>(private val grid: List<List<T>>) {
   init {
-    require(grid.all { it.size == width }) { "Invalid grid format. Some lines do not have $width elements" }
+    require(grid.all { it.size == (grid.firstOrNull()?.size ?: 0) }) { "Invalid grid format." }
   }
 
   companion object {
-    fun <R> fromGrid(grid: List<List<R>>): Grid<R> = Grid(grid, grid.firstOrNull()?.size ?: 0, grid.size)
+    fun <R> fromGrid(grid: List<List<R>>): Grid<R> = Grid(grid)
 
     fun <R> from(input: List<String>, mapper: (String) -> List<R>): Grid<R> = input
       .map { mapper(it) }
-      .let { Grid(it, it.firstOrNull()?.size ?: 0, it.size) }
+      .let { Grid(it) }
 
     fun from(input: List<String>): Grid<Char> = from(input) { it.toList() }
 
     fun <R> fromInput(mapper: (String) -> List<R>): Grid<R> = readInput()
       .map { mapper(it) }
-      .let { Grid(it, it.firstOrNull()?.size ?: 0, it.size) }
+      .let { Grid(it) }
 
     fun fromInput(): Grid<Char> = from(readInput())
   }
 
-  val elements: Map<Point, T>
-    get() = foldIndexed(emptyMap()) { point, acc, element -> acc + (point to element) }
+  val width: Int = grid.firstOrNull()?.size ?: 0
+
+  val xRange: IntRange = 0 until width
+
+  val height: Int = grid.size
+
+  val yRange: IntRange = 0 until height
+
+  val indexes: List<Point> = yRange.flatMap { i -> xRange.map { j -> i to j } }
+
+  val elements: Map<Point, T> = indexes.associateWith { (i, j) -> grid[i][j] }
+
+  val columns: List<List<T>> = yRange.map { i -> xRange.map { j -> grid[j][i] } }
+
+  val lines: List<List<T>>  = grid
 
   override fun toString(): String {
-    val maxElementSize = fold(0) { acc , element -> max(acc, element.toString().length) }
-    return (0 until height).fold("") { acc, i ->
-      val line = (0 until width).fold("") { acc2, j ->
+    val maxElementSize = fold(0) { acc, element -> max(acc, element.toString().length) }
+    return yRange.fold("") { acc, i ->
+      val line = xRange.fold("") { acc2, j ->
         acc2 + grid[i][j].toString().padStart(maxElementSize, ' ') + " "
       }
       acc + line + System.lineSeparator()
@@ -187,7 +200,7 @@ data class Grid<T>(val grid: List<List<T>>, val width: Int, val height: Int) {
         mapper(i to j, element)
       }
     }
-    .let { Grid(it, width, height) }
+    .let { Grid(it) }
 
   fun <R> map(mapper: (T) -> R): Grid<R> = mapIndexed(liftAsIndexed(mapper))
 
@@ -197,25 +210,31 @@ data class Grid<T>(val grid: List<List<T>>, val width: Int, val height: Int) {
         condition(i to j, element)
       }
     }
-    .let { Grid(it, it.firstOrNull()?.size ?: 0, height) }
+    .let { Grid(it) }
 
   fun filter(condition: (T) -> Boolean): Grid<T> = filterIndexed(liftAsIndexed(condition))
 
-  fun <R> foldIndexed(initial: R, f: (Point, R, T) -> R): R =
-    grid.foldIndexed(initial) { i, acc, line ->
+  fun <R> foldIndexed(initial: R, f: (Point, R, T) -> R): R = grid
+    .foldIndexed(initial) { i, acc, line ->
       line.foldIndexed(acc) { j, acc2, element ->
         f(i to j, acc2, element)
       }
     }
 
-  fun <R> fold(initial: R, f: (R, T) -> R): R =
-    grid.fold(initial) { acc, line ->
+  fun <R> fold(initial: R, f: (R, T) -> R): R = grid
+    .fold(initial) { acc, line ->
       line.fold(acc) { acc2, element ->
         f(acc2, element)
       }
     }
 
-  // TODO(): foldLines, foldRows,
+  fun <R> foldLinesIndexed(initial: R, f: (Int, R, List<T>) -> R): R = grid.foldIndexed(initial, f)
+
+  fun <R> foldLines(initial: R, f: (R, List<T>) -> R): R = grid.fold(initial, f)
+
+  fun <R> foldColumnsIndexed(initial: R, f: (Int, R, List<T>) -> R): R = columns.foldIndexed(initial, f)
+
+  fun <R> foldColumns(initial: R, f: (R, List<T>) -> R): R = columns.fold(initial, f)
 
   private fun <A, B> liftAsIndexed(f: (A) -> B): (Point, A) -> B = { _: Point, el: A -> f(el) }
 }
