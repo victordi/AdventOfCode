@@ -1,6 +1,6 @@
 package advent2023.day11
 
-import Input.withInput
+import Grid
 import manhattanDistance
 
 fun main() {
@@ -8,28 +8,19 @@ fun main() {
   println(solve(1_000_000))
 }
 
-val map = withInput { input ->
-  input.map { it.toList() }.toList()
+val grid = Grid.fromInput()
+
+val emptyLines = grid.foldLinesIndexed(setOf<Int>()) { i, acc, line ->
+  acc + if (line.all { it == '.' }) setOf(i) else emptySet()
 }
 
-val emptyLines = map.indices.mapIndexedNotNull { idx, i ->
-  if (map[i].all { c -> c == '.' }) idx
-  else null
-}.toSet()
-
-val emptyRows = map.indices.mapIndexedNotNull { idx, j ->
-  val isEmpty = map.indices.fold(true) { acc, i ->
-    acc && map[i][j] == '.'
-  }
-  if (isEmpty) idx else null
-}.toSet()
+val emptyColumns = grid.foldColumnsIndexed(setOf<Int>()) { i, acc, column ->
+  acc + if (column.all { it == '.' }) setOf(i) else emptySet()
+}
 
 fun solve(expansion: Int): Long = run {
-  val galaxies = map.flatMapIndexed { i, chars ->
-    chars.mapIndexedNotNull { j, c ->
-      if (c == '#') i to j else null
-    }
-  }
+  val galaxies = grid.elements.filter { (_, c) -> c == '#' }.keys
+
   galaxies.mapIndexed { idx, (x1, y1) ->
     galaxies.drop(idx + 1).sumOf { (x2, y2) ->
       val p1 = x1 to y1
@@ -37,7 +28,7 @@ fun solve(expansion: Int): Long = run {
       val xRange = if (x1 < x2) (x1..x2) else (x2..x1)
       val yRange = if (y1 < y2) (y1..y2) else (y2..y1)
       manhattanDistance(p1, p2).toLong() +
-        yRange.intersect(emptyRows).size * (expansion - 1) +
+        yRange.intersect(emptyColumns).size * (expansion - 1) +
         xRange.intersect(emptyLines).size * (expansion - 1)
     }
   }.sum()
