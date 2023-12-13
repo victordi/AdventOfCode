@@ -180,7 +180,7 @@ class Grid<T>(private val grid: List<List<T>>) {
 
   val elements: Map<Point, T> = indexes.associateWith { (i, j) -> grid[i][j] }
 
-  val columns: List<List<T>> = yRange.map { i -> xRange.map { j -> grid[j][i] } }
+  val columns: List<List<T>> = xRange.map { i -> yRange.map { j -> grid[j][i] } }
 
   val lines: List<List<T>>  = grid
 
