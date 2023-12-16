@@ -182,7 +182,15 @@ class Grid<T>(private val grid: List<List<T>>) {
 
   val columns: List<List<T>> = xRange.map { i -> yRange.map { j -> grid[j][i] } }
 
-  val lines: List<List<T>>  = grid
+  val lines: List<List<T>> = grid
+
+  fun get(point: Point): T = grid[point.first][point.second]
+
+  fun get(x: Int, y: Int): T = get(x to y)
+
+  fun getOrNull(point: Point): T? = grid.getOrNull(point.first)?.getOrNull(point.second)
+
+  fun getOrNull(x: Int, y: Int): T? = getOrNull(x to y)
 
   override fun toString(): String {
     val maxElementSize = fold(0) { acc, element -> max(acc, element.toString().length) }
