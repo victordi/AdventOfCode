@@ -10,7 +10,21 @@ object Part1 : AoCPart()
 object Part2 : AoCPart()
 
 enum class Direction(val diff: Point) {
-  North(-1 to 0), South(1 to 0), East(0 to 1), West(0 to -1)
+  North(-1 to 0), South(1 to 0), East(0 to 1), West(0 to -1);
+
+  fun rotateRight(): Direction = when(this) {
+    East -> South
+    South -> West
+    West -> North
+    North -> East
+  }
+
+  fun rotateLeft(): Direction = when(this) {
+    East -> North
+    South -> East
+    West -> South
+    North -> West
+  }
 }
 
 fun Char.toDirection() = when (this) {
@@ -184,7 +198,7 @@ class Grid<T>(private val grid: List<List<T>>) {
 
   val lines: List<List<T>> = grid
 
-  fun get(point: Point): T = grid[point.first][point.second]
+  operator fun get(point: Point): T = grid[point.first][point.second]
 
   fun get(x: Int, y: Int): T = get(x to y)
 
