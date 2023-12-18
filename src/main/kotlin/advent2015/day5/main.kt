@@ -1,6 +1,7 @@
 package advent2015.day5
 
-import zip3
+import utils.Input
+import utils.zip3
 
 val lines = Input.readInput()
 

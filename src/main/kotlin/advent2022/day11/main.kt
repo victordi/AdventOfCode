@@ -1,10 +1,10 @@
 package advent2022.day11
 
-import AoCPart
-import Input.readInput
-import Part1
-import Part2
-import splitList
+import utils.AoCPart
+import utils.Input.readInput
+import utils.Part1
+import utils.Part2
+import utils.splitList
 
 fun main() {
     println(solve(20, Part1))

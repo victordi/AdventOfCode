@@ -1,6 +1,6 @@
 package advent2023.day23
 
-import Input.withInput
+import utils.Input.withInput
 
 fun main() {
   println(first())

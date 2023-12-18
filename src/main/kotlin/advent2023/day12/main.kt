@@ -1,6 +1,6 @@
 package advent2023.day12
 
-import Input.withInput
+import utils.Input.withInput
 import arrow.core.replicate
 
 fun main() {

@@ -1,7 +1,7 @@
 package AoC2021
 
-import Input.withInput
-import getAdjacentWithCorners
+import utils.Input.withInput
+import utils.getAdjacentWithCorners
 import java.util.*
 
 fun main() {

@@ -1,6 +1,7 @@
 package advent2022.day19
 
 import arrow.core.Tuple4
+import utils.Input
 import java.util.*
 import kotlin.system.measureTimeMillis
 

@@ -1,5 +1,7 @@
 package advent2022.day20
 
+import utils.Input
+
 val input = Input.readInput().map { it.toInt() }
 val SIZE = input.size
 

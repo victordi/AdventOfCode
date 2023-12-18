@@ -1,6 +1,6 @@
 package advent2023.day01
 
-import Input.withInput
+import utils.Input.withInput
 import arrow.core.foldLeft
 
 fun main() {

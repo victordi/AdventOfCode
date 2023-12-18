@@ -1,7 +1,7 @@
 package advent2023.day04
 
-import Input.withInput
-import splitTwo
+import utils.Input.withInput
+import utils.splitTwo
 import kotlin.math.pow
 
 fun main() {

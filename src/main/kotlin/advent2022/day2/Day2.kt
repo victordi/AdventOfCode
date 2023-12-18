@@ -1,6 +1,6 @@
 package advent2022.day2
 
-import Input.withInput
+import utils.Input.withInput
 
 enum class Shape(val score: Int) {
     ROCK(1), PAPER(2), SCISSOR(3)

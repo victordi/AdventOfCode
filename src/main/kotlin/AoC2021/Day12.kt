@@ -1,10 +1,10 @@
 package AoC2021.day12
 
-import Graph
-import Input.withInput
-import addEdgeBi
-import neighbours
-import newGraph
+import utils.Graph
+import utils.Input.withInput
+import utils.addEdgeBi
+import utils.neighbours
+import utils.newGraph
 import java.util.*
 
 fun main() {

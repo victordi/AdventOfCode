@@ -1,5 +1,7 @@
 package advent2022.day18
 
+import utils.Input
+
 typealias Cube = Triple<Int, Int, Int>
 
 val cubes = Input.readInput().map { line -> line.split(',').map { it.toInt() }.let { Triple(it[0], it[1], it[2]) } }.toSet()

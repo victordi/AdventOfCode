@@ -1,6 +1,6 @@
 package advent2022.day25
 
-import Input
+import utils.Input
 
 fun main() {
     val sum = first()

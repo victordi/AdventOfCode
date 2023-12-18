@@ -1,9 +1,10 @@
 package advent2022.day22
 
-import AoCPart
-import Part1
-import Part2
-import Point
+import utils.AoCPart
+import utils.Input
+import utils.Part1
+import utils.Part2
+import utils.Point
 import java.util.regex.Pattern
 
 val lines = Input.readInput()

@@ -1,13 +1,13 @@
 package advent2023.day16
 
-import Direction
-import Direction.East
-import Direction.North
-import Direction.South
-import Direction.West
-import Grid
-import Point
-import move
+import utils.Direction
+import utils.Direction.East
+import utils.Direction.North
+import utils.Direction.South
+import utils.Direction.West
+import utils.Grid
+import utils.Point
+import utils.move
 
 fun main() {
   println(first())
@@ -36,6 +36,7 @@ fun Grid<Char>.getEnergized(startingPoint: Pair<Point, Direction>): Int = run {
             West -> current.add(currentPos.move(South) to South)
             South -> current.add(currentPos.move(West) to West)
             North -> current.add(currentPos.move(East) to East)
+            else -> throw IllegalArgumentException("Diagonal Directions not accepted")
           }
         }
         '\\' -> {
@@ -44,6 +45,7 @@ fun Grid<Char>.getEnergized(startingPoint: Pair<Point, Direction>): Int = run {
             West -> current.add(currentPos.move(North) to North)
             South -> current.add(currentPos.move(East) to East)
             North -> current.add(currentPos.move(West) to West)
+            else -> throw IllegalArgumentException("Diagonal Directions not accepted")
           }
         }
         '|' -> {
@@ -53,6 +55,7 @@ fun Grid<Char>.getEnergized(startingPoint: Pair<Point, Direction>): Int = run {
               current.add(currentPos.move(North) to North)
             }
             North, South -> current.add(currentPos.move(dir) to dir)
+            else -> throw IllegalArgumentException("Diagonal Directions not accepted")
           }
         }
         '-' -> {
@@ -62,6 +65,7 @@ fun Grid<Char>.getEnergized(startingPoint: Pair<Point, Direction>): Int = run {
               current.add(currentPos.move(West) to West)
             }
             East, West -> current.add(currentPos.move(dir) to dir)
+            else -> throw IllegalArgumentException("Diagonal Directions not accepted")
           }
         }
       }

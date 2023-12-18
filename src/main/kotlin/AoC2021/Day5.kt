@@ -1,6 +1,6 @@
 package AoC2021.day5
 
-import Input.withInput
+import utils.Input.withInput
 
 fun main() {
     println("Result of the first part: " + first().toString())

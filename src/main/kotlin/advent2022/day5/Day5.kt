@@ -1,7 +1,6 @@
 package advent2022.day5
 
-import Input.readInput
-import Input.withInput
+import utils.Input.readInput
 import java.util.*
 
 

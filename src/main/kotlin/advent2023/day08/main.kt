@@ -1,10 +1,10 @@
 package advent2023.day08
 
-import AoCPart
-import Input.withInput
-import Part1
-import Part2
-import lcm
+import utils.AoCPart
+import utils.Input.withInput
+import utils.Part1
+import utils.Part2
+import utils.lcm
 
 val map = withInput { input ->
   input.drop(2).map { path ->

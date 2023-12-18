@@ -1,8 +1,7 @@
 package advent2022.day8
 
-import Input.readInput
-import arrayForEach
-import kotlin.math.max
+import utils.Input.readInput
+import utils.arrayForEach
 
 var n: Int = 0
 

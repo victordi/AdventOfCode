@@ -1,7 +1,7 @@
 package advent2022.day9
 
-import Input.readInput
-import splitTwo
+import utils.Input.readInput
+import utils.splitTwo
 import kotlin.math.abs
 
 typealias Point = Pair<Int, Int>

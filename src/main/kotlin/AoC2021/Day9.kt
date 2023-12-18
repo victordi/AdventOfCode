@@ -1,7 +1,7 @@
 package AoC2021.day9
 
-import Input.withInput
-import getAdjacent
+import utils.Input.withInput
+import utils.getAdjacent
 
 fun main() {
     println("Result of the first part: " + first().toString())

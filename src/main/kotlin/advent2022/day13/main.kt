@@ -1,7 +1,7 @@
 package advent2022.day13
 
-import Input.readInput
-import splitList
+import utils.Input.readInput
+import utils.splitList
 
 fun main() {
     println(first())

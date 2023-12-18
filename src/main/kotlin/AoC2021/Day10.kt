@@ -1,6 +1,6 @@
 package AoC2021.day10
 
-import Input.withInput
+import utils.Input.withInput
 import java.util.*
 
 fun main() {

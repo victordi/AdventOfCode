@@ -1,8 +1,8 @@
 package advent2023.day03
 
-import Input.withInput
-import Point
-import getAdjacentWithCorners
+import utils.Input.withInput
+import utils.Point
+import utils.getAdjacentWithCorners
 
 fun main() {
   println(first())

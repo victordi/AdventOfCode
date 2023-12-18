@@ -1,5 +1,7 @@
 package advent2022.day16
 
+import utils.Input
+
 val neighbours: MutableMap<String, List<String>> = mutableMapOf()
 val valves: MutableMap<String, Int> = mutableMapOf()
 

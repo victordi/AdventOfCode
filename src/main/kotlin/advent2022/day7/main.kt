@@ -1,10 +1,10 @@
 package advent2022.day7
 
-import Input.readInput
-import Leaf
-import Tree
+import utils.Input.readInput
+import utils.Leaf
+import utils.Tree
 import arrow.core.foldLeft
-import splitTwo
+import utils.splitTwo
 
 sealed class Instruction
 data class CD(val path: String): Instruction()

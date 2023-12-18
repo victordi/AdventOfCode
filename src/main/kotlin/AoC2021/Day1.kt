@@ -1,7 +1,7 @@
 package AoC2021.day1
 
-import Input.withInput
-import zip3
+import utils.Input.withInput
+import utils.zip3
 
 fun main() = withInput { input ->
     val numbers = input.map { it.toInt() }.toList()

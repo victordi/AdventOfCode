@@ -1,7 +1,7 @@
 package AoC2021.day16
 
-import Input.withInput
-import toDecimal
+import utils.Input.withInput
+import utils.binaryToDecimal
 
 fun main() {
     println("Result of the first part: " + first().toString())
@@ -35,8 +35,8 @@ fun first(): Long {
         var index = 0
         while (index < bitString.length) {
             if (index + 6 >= bitString.length) break
-            result += bitString.substring(index, index + 3).toDecimal()
-            val type =  bitString.substring(index + 3, index + 6).toDecimal()
+            result += bitString.substring(index, index + 3).binaryToDecimal()
+            val type =  bitString.substring(index + 3, index + 6).binaryToDecimal()
             index += 6
             if (type == 4L) {
                 while(bitString.substring(index, index + 5)[0] == '1') {
@@ -63,7 +63,7 @@ fun second(): Long {
 
 fun String.evaluate(): Pair<Long, Int> {
     var index = 0
-    val type =  this.substring(index + 3, index + 6).toDecimal()
+    val type =  this.substring(index + 3, index + 6).binaryToDecimal()
     index += 6
     if (type == 4L) {
         var bitValue = ""
@@ -73,11 +73,11 @@ fun String.evaluate(): Pair<Long, Int> {
             index += 5
             if (chunk[0] == '0') break
         }
-        return bitValue.toDecimal() to index
+        return bitValue.binaryToDecimal() to index
     } else {
         val packetValues = mutableListOf<Long>()
         if (this[index] == '0') {
-            val len = this.substring(index + 1, index + 16).toDecimal() + index
+            val len = this.substring(index + 1, index + 16).binaryToDecimal() + index
             index += 16
             while (index < len + 6) {
                 val (packetValue, packetSize) = this.substring(index).evaluate()
@@ -85,7 +85,7 @@ fun String.evaluate(): Pair<Long, Int> {
                 index += packetSize
             }
         } else {
-            var nrPackets = this.substring(index + 1, index + 12).toDecimal()
+            var nrPackets = this.substring(index + 1, index + 12).binaryToDecimal()
             index += 12
             while(--nrPackets >= 0) {
                 val (packetValue, packetSize) = this.substring(index).evaluate()

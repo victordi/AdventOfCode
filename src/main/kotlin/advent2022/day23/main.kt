@@ -1,8 +1,9 @@
 package advent2022.day23
 
 import AoC2021.Day20.adjacent
-import Point
+import utils.Point
 import arrow.core.Tuple4
+import utils.Input
 
 fun parseInput(): Array<Point> {
     val lines = Input.readInput()

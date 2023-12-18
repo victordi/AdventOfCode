@@ -1,7 +1,8 @@
 package advent2015.day6
 
-import arrayForEach
-import splitTwo
+import utils.Input
+import utils.arrayForEach
+import utils.splitTwo
 
 val lines = Input.readInput()
 

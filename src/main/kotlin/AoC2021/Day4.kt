@@ -1,6 +1,6 @@
 package AoC2021.day4
 
-import Input.withInput
+import utils.Input.withInput
 
 typealias Board = MutableList<MutableList<Int>>
 

@@ -1,8 +1,8 @@
 package advent2022.day4
 
 import AoC2021.Day22.kt.intersect
-import Input.withInput
-import splitTwo
+import utils.Input.withInput
+import utils.splitTwo
 
 data class Cleanup(
     val start1: Int,

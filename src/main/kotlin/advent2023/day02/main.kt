@@ -1,7 +1,7 @@
 package advent2023.day02
 
-import Input.withInput
-import splitTwo
+import utils.Input.withInput
+import utils.splitTwo
 
 fun main() {
   println(first())

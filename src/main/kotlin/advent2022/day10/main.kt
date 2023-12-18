@@ -1,9 +1,8 @@
 package advent2022.day10
 
-import Input.readInput
-import prettyPrint
-import splitTwo
-import kotlin.math.abs
+import utils.Input.readInput
+import utils.prettyPrint
+import utils.splitTwo
 
 
 fun main() {

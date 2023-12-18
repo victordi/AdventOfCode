@@ -1,7 +1,7 @@
 package advent2023.day14
 
-import Grid
-import Point
+import utils.Grid
+import utils.Point
 
 val grid = Grid.fromInput()
 

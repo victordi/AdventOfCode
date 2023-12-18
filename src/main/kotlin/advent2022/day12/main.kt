@@ -1,11 +1,10 @@
 package advent2022.day12
 
-import Graph
-import Input.readInput
+import utils.Graph
+import utils.Input.readInput
 import advent2022.day9.Point
-import arrayForEach
-import getAdjacent
-import prettyPrint
+import utils.arrayForEach
+import utils.getAdjacent
 
 fun main() {
     val (graph, start, end) = parseInput()

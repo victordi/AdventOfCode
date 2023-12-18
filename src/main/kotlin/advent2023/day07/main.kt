@@ -1,9 +1,9 @@
 package advent2023.day07
 
-import AoCPart
-import Input.withInput
-import Part1
-import Part2
+import utils.AoCPart
+import utils.Input.withInput
+import utils.Part1
+import utils.Part2
 
 fun main() {
   println(solve(Part1))

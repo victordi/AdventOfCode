@@ -1,6 +1,6 @@
 package AoC2021.day2
 
-import Input.withInput
+import utils.Input.withInput
 import kotlin.IllegalArgumentException
 
 fun main() = withInput { input ->

@@ -1,8 +1,9 @@
 package advent2015.day3
 
-import every
-import move
-import toDirection
+import utils.Input
+import utils.every
+import utils.move
+import utils.toDirection
 
 val lines = Input.readInput()
 

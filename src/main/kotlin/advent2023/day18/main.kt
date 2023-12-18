@@ -1,13 +1,13 @@
 package advent2023.day18
 
-import Direction
-import Direction.East
-import Direction.North
-import Direction.South
-import Direction.West
-import Input.readInput
-import move
-import shoelaceArea
+import utils.Direction
+import utils.Direction.East
+import utils.Direction.North
+import utils.Direction.South
+import utils.Direction.West
+import utils.Input.readInput
+import utils.move
+import utils.shoelaceArea
 
 fun main() {
   println(first())

@@ -1,7 +1,7 @@
 package AoC2021.Day22.kt
 
 import AoC2021.Day19.Point
-import Input.withInput
+import utils.Input.withInput
 import kotlin.math.max
 import kotlin.math.min
 

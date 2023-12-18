@@ -1,8 +1,9 @@
 package advent2022.day15
 
-import Point
-import manhattanDistance
-import splitTwo
+import utils.Input
+import utils.Point
+import utils.manhattanDistance
+import utils.splitTwo
 
 fun parseInput(): List<Pair<Point, Point>> =
     Input.readInput().fold(emptyList()) { acc, line ->

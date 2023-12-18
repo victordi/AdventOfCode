@@ -1,7 +1,7 @@
 package AoC2021.Day25
 
-import Input.withInput
-import arrayForEach
+import utils.Input.withInput
+import utils.arrayForEach
 
 fun main() {
     println("Result of the first part: " + first().toString())

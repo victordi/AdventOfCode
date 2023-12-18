@@ -1,8 +1,9 @@
 package advent2022.day24
 
-import Graph
-import Point
-import arrayForEach
+import utils.Graph
+import utils.Input
+import utils.Point
+import utils.arrayForEach
 import java.util.*
 
 val lines = Input.readInput()

@@ -1,8 +1,8 @@
 package advent2023.day13
 
-import Grid
-import Input.readInput
-import splitList
+import utils.Grid
+import utils.Input.readInput
+import utils.splitList
 
 fun main() {
   println(first())

@@ -1,7 +1,7 @@
 package AoC2021.day3
 
-import Input.withInput
-import toDecimal
+import utils.Input.withInput
+import utils.binaryToDecimal
 
 fun main() = withInput {
     val binaryNumbers = it.toList()
@@ -14,7 +14,7 @@ fun first(list: List<String>): Long {
         if (nrZero > list.size / 2) '0' else '1'
     }.joinToString(separator = "")
     val epsilon = gamma.map { if (it == '0') '1' else '0' }.joinToString(separator = "")
-    return gamma.toDecimal() * epsilon.toDecimal()
+    return gamma.binaryToDecimal() * epsilon.binaryToDecimal()
 }
 
 fun second(list: List<String>): Long =
@@ -28,7 +28,7 @@ fun List<String>.findRating(common: Char, uncommon: Char): Long = this[0].indice
             it[idx] == if (nrZeroes[idx] > acc.size / 2) common else uncommon
         }
     }
-}.first().toDecimal()
+}.first().binaryToDecimal()
 
 fun List<String>.getNrZeroes(): List<Int> =
     this.first().indices.map { idx -> this.count { it[idx] == '0' } }

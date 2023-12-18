@@ -1,5 +1,7 @@
 package advent2015.day21
 
+import utils.Input
+
 val lines = Input.readInput()
 
 fun main() {

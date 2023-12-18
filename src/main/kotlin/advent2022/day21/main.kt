@@ -1,5 +1,6 @@
 package advent2022.day21
 
+import utils.Input
 import java.util.*
 
 data class Monkey(val name: String, val x: String, val y: String, val op: Char)

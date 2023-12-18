@@ -1,12 +1,13 @@
 package advent2023.day17
 
-import AoCPart
-import Direction
-import Direction.East
-import Part1
-import Part2
-import Point
-import move
+import utils.AoCPart
+import utils.Direction
+import utils.Direction.East
+import utils.Grid
+import utils.Part1
+import utils.Part2
+import utils.Point
+import utils.move
 
 fun main() {
   println(solve(Part1))

@@ -1,12 +1,12 @@
 package advent2023.day10
 
-import Direction
-import Direction.East
-import Direction.North
-import Direction.South
-import Direction.West
-import Input.withInput
-import Point
+import utils.Direction
+import utils.Direction.East
+import utils.Direction.North
+import utils.Direction.South
+import utils.Direction.West
+import utils.Input.withInput
+import utils.Point
 
 fun main() {
   println(first())

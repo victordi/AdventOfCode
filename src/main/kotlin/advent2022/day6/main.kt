@@ -1,7 +1,6 @@
 package advent2022.day6
 
-import Input.readInput
-import java.util.*
+import utils.Input.readInput
 
 
 fun main() {

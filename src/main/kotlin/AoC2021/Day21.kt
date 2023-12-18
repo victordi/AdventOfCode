@@ -1,7 +1,7 @@
 package AoC2021.Day21
 
-import Input.withInput
-import modSkipZero
+import utils.Input.withInput
+import utils.modSkipZero
 
 fun main() {
     println("Result of the first part: " + first().toString())

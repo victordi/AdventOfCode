@@ -1,8 +1,8 @@
 package AoC2021.day15
 
-import Graph
-import Input.withInput
-import getAdjacent
+import utils.Graph
+import utils.Input.withInput
+import utils.getAdjacent
 
 fun main() {
     println("Result of the first part: " + first().toString())

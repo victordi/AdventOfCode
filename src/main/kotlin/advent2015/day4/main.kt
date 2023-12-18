@@ -1,5 +1,6 @@
 package advent2015.day4
 
+import utils.Input
 import java.math.BigInteger
 import java.security.MessageDigest
 

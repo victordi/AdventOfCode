@@ -1,6 +1,6 @@
 package AoC2021.day7
 
-import Input.withInput
+import utils.Input.withInput
 import kotlin.math.abs
 
 fun main() {

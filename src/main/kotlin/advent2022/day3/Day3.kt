@@ -1,6 +1,6 @@
 package advent2022.day3
 
-import Input.withInput
+import utils.Input.withInput
 
 fun Char.priority(): Int = if (isLowerCase()) code - 96 else code - 38
 

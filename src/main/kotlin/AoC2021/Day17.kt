@@ -1,6 +1,6 @@
 package AoC2021.Day17
 
-import Input.withInput
+import utils.Input.withInput
 
 var xLow = 0
 var xHigh = 0

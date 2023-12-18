@@ -1,7 +1,7 @@
 package advent2023.day11
 
-import Grid
-import manhattanDistance
+import utils.Grid
+import utils.manhattanDistance
 
 fun main() {
   println(solve(2))

@@ -1,6 +1,6 @@
 package advent2023.day15
 
-import Input.readInput
+import utils.Input.readInput
 import advent2023.day15.Sign.Equals
 import advent2023.day15.Sign.Minus
 

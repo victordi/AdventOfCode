@@ -1,6 +1,7 @@
 package advent2022.day17
 
-import Point
+import utils.Input
+import utils.Point
 
 val moves = Input.readInput().first().toCharArray().toList()
 

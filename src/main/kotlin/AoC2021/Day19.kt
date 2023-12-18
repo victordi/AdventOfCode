@@ -1,6 +1,6 @@
 package AoC2021.Day19
 
-import Input.withInput
+import utils.Input.withInput
 import kotlin.math.absoluteValue
 import kotlin.system.measureTimeMillis
 
