@@ -35,7 +35,11 @@ fun Char.toDirection() = when (this) {
   else -> throw IllegalArgumentException("Not a valid direction $this")
 }
 
-fun Point.move(direction: Direction): Point = this + direction.diff
+fun Point.move(direction: Direction, steps: Int = 1): Point =
+  (first + direction.diff.first * steps) to (second + direction.diff.second * steps)
+
+fun Pair<Long, Long>.move(direction: Direction, steps: Long = 1): Pair<Long, Long> =
+  (first + direction.diff.first * steps) to (second + direction.diff.second * steps)
 
 fun Int.modSkipZero(n: Int): Int = if (this % n == 0) n else this % n
 

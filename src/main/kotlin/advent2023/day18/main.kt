@@ -6,6 +6,7 @@ import Direction.North
 import Direction.South
 import Direction.West
 import Input.readInput
+import move
 import shoelaceArea
 
 fun main() {
@@ -40,14 +41,13 @@ val part2Input = readInput().map {
   color.drop(1).dropLast(1).toLong(radix = 16) to dir
 }
 
-
 fun second(): Long = part2Input.getArea()
 
 fun List<Pair<Long, Direction>>.getArea(): Long {
   val start = 0L to 0L
 
   val (_, visited, points) = fold(Triple(start, setOf(start), 0L)) { (currentPos, visited, points), (meters, dir) ->
-    val nextPos = currentPos.first + dir.diff.first * meters to currentPos.second + dir.diff.second * meters
+    val nextPos = currentPos.move(dir, meters)
     Triple(nextPos, visited + nextPos, points + meters)
   }
 
