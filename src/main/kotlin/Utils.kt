@@ -377,3 +377,11 @@ fun lcm(a: Long, b: Long): Long {
 
 val Any?.println: Unit
   get() = println(this)
+
+fun Collection<Point>.shoelaceArea(): Int = map { (x, y) -> x.toLong() to y.toLong() }.shoelaceArea().toInt()
+
+fun Collection<Pair<Long, Long>>.shoelaceArea(): Long = run {
+  require(size > 2) { "polygon should contain at least 3 points" }
+  val points = listOf(first()) + this.reversed()
+  points.zipWithNext().fold(0L) { acc, (p1, p2) -> acc + p1.first * p2.second - p2.first * p1.second } / 2
+}

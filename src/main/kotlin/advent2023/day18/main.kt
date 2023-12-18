@@ -6,6 +6,7 @@ import Direction.North
 import Direction.South
 import Direction.West
 import Input.readInput
+import shoelaceArea
 
 fun main() {
   println(first())
@@ -43,22 +44,12 @@ val part2Input = readInput().map {
 fun second(): Long = part2Input.getArea()
 
 fun List<Pair<Long, Direction>>.getArea(): Long {
-  var start = 0L to 0L
-  val visited = mutableSetOf(start)
-  var points = 0L
+  val start = 0L to 0L
 
-  forEach { (meters, dir) ->
-    start = start.first + dir.diff.first * meters to start.second + dir.diff.second * meters
-    points += meters
-    visited.add(start)
+  val (_, visited, points) = fold(Triple(start, setOf(start), 0L)) { (currentPos, visited, points), (meters, dir) ->
+    val nextPos = currentPos.first + dir.diff.first * meters to currentPos.second + dir.diff.second * meters
+    Triple(nextPos, visited + nextPos, points + meters)
   }
 
-  var area = 0L
-  val reversed = listOf(start) + visited.reversed()
-  reversed.zipWithNext().forEach { (p1, p2) ->
-    val (x1, y1) = p1
-    val (x2, y2) = p2
-    area += x1 * y2 - x2 * y1
-  }
-  return (area + points) / 2 + 1
+  return visited.shoelaceArea() + points / 2 + 1
 }
