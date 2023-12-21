@@ -51,6 +51,12 @@ class Grid<T>(private val grid: List<List<T>>) {
     .filter { indexes.contains(it) }
     .map { get(it) }
 
+  fun getAdjacentPoints(x: Int, y: Int): List<Pair<Point, T>> = listOf(x - 1 to y, x to y + 1, x + 1 to y, x to y - 1)
+    .filter { indexes.contains(it) }
+    .map { it to get(it) }
+
+  fun getAdjacentPoints(point: Point): List<Pair<Point,T>> = getAdjacentPoints(point.first, point.second)
+
   fun getAdjacent(point: Point): List<T> = getAdjacent(point.first, point.second)
 
   fun getAdjacentWithCorners(x: Int, y: Int): List<T> = getAdjacentWithCorners(x to y)

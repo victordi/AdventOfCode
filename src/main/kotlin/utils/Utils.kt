@@ -5,6 +5,10 @@ val Any?.println: Unit
 
 typealias Point = Pair<Int, Int>
 
+fun Point.getAdjacent(): List<Point> = let { (x, y) ->
+  listOf(x - 1 to y, x to y + 1, x + 1 to y, x to y - 1)
+}
+
 fun Int.modSkipZero(n: Int): Int = if (this % n == 0) n else this % n
 
 fun String.splitTwo(delimiter: String): Pair<String, String> =
