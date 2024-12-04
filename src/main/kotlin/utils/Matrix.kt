@@ -4,6 +4,12 @@ import kotlin.math.abs
 
 fun manhattanDistance(p1: Point, p2: Point) = abs(p1.first - p2.first) + abs(p1.second - p2.second)
 operator fun Point.plus(other: Point): Point = Pair(this.first + other.first, this.second + other.second)
+fun <T> Array<Array<T>>.getOrElse(point: Point, default: T): T =
+  try {
+    this[point.first][point.second]
+  } catch (e: ArrayIndexOutOfBoundsException) {
+    default
+  }
 fun <T> Array<Array<T>>.getAdjacent(point: Point): List<Pair<Int, Int>> = getAdjacent(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
   val result = mutableListOf<Pair<Int, Int>>()
@@ -55,4 +61,20 @@ infix fun <T> Array<Array<T>>.arrayEquals(other: Array<Array<T>>): Boolean {
   return this.foldIndexed(true) { i, acc, line ->
     acc && line.foldIndexed(true) { j, acc2, e -> acc2 && e == other[i][j] }
   }
+}
+
+fun <T> Array<Array<T>>.sumOf(transformer: (Pair<Int, Int>) -> Int): Int {
+  var result = 0
+  for (i in this.indices)
+    for (j in this[0].indices)
+      result += transformer(i to j)
+  return result
+}
+
+fun <T> Array<Array<T>>.count(predicate: (Pair<Int, Int>) -> Boolean): Int {
+  var result = 0
+  for (i in this.indices)
+    for (j in this[0].indices)
+      if (predicate(i to j)) result++
+  return result
 }
