@@ -78,3 +78,15 @@ fun <T> Array<Array<T>>.count(predicate: (Pair<Int, Int>) -> Boolean): Int {
       if (predicate(i to j)) result++
   return result
 }
+
+fun <T> Array<Array<T>>.indexOf(value: T): Point {
+  var result = -1 to -1
+  arrayForEach { (i, j) ->
+    if (this[i][j] == value) {
+      result = i to j
+    }
+  }
+  return result
+}
+
+inline fun <reified T> Array<Array<T>>.copy(): Array<Array<T>> = map { it.copyOf() }.toTypedArray()
