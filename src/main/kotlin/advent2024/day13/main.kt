@@ -1,12 +1,9 @@
 package advent2024.day13
 
 import utils.Input.withInput
+import utils.extractInts
 
 data class Machine(val ax: Long, val ay: Long, val bx: Long, val by: Long, val x: Long, val y: Long)
-
-fun extractInts(input: String): List<Int> {
-  return Regex("""[+-]?\d+""").findAll(input).map { it.value.toInt() }.toList()
-}
 
 const val part2Nr = 10000000000000L
 val machines = withInput { input ->

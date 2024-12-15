@@ -4,12 +4,19 @@ import kotlin.math.abs
 
 fun manhattanDistance(p1: Point, p2: Point) = abs(p1.first - p2.first) + abs(p1.second - p2.second)
 operator fun Point.plus(other: Point): Point = Pair(this.first + other.first, this.second + other.second)
+operator fun Point.minus(other: Point): Point = Pair(this.first - other.first, this.second - other.second)
 fun <T> Array<Array<T>>.getOrElse(point: Point, default: T): T =
   try {
     this[point.first][point.second]
   } catch (e: ArrayIndexOutOfBoundsException) {
     default
   }
+operator fun <T> Array<Array<T>>.get(point: Point): T = this[point.first][point.second]
+operator fun <T> Array<Array<T>>.set(point: Point, value: T) {
+  this[point.first][point.second] = value
+}
+
+
 fun <T> Array<Array<T>>.getAdjacent(point: Point): List<Pair<Int, Int>> = getAdjacent(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
   val result = mutableListOf<Pair<Int, Int>>()

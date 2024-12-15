@@ -88,3 +88,7 @@ fun Collection<Pair<Long, Long>>.shoelaceArea(): Long = run {
   val points = listOf(first()) + this.reversed()
   points.zipWithNext().fold(0L) { acc, (p1, p2) -> acc + p1.first * p2.second - p2.first * p1.second } / 2
 }
+
+fun extractInts(input: String): List<Int> {
+  return Regex("""[+-]?\d+""").findAll(input).map { it.value.toInt() }.toList()
+}

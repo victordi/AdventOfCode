@@ -1,13 +1,10 @@
 package advent2024.day14
 
 import utils.Input.withInput
+import utils.extractInts
 import utils.prettyPrint
 
 data class Robot(val x: Int, val y: Int, val speedX: Int, val speedY: Int)
-
-fun extractInts(input: String): List<Int> {
-  return Regex("""[+-]?\d+""").findAll(input).map { it.value.toInt() }.toList()
-}
 
 val robots = withInput { input ->
   input
