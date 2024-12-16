@@ -28,10 +28,10 @@ enum class Direction(val diff: Point) {
 
   fun rotate(degree: Int = 45): Direction = run {
     require(degree % 45 == 0) { "Only accepting degrees that are multiple of 45" }
-    (0..degree / 45).fold(this) { acc, _ -> acc.rotateRightOnce() }
+    (1..degree / 45).fold(this) { acc, _ -> acc.rotateRightOnce() }
   }
 
-  fun rotateRight(): Direction = rotate()
+  fun rotateRight(): Direction = rotate(90)
 
   fun rotateLeft(): Direction = rotate(270)
 }
