@@ -92,3 +92,23 @@ fun Collection<Pair<Long, Long>>.shoelaceArea(): Long = run {
 fun extractInts(input: String): List<Int> {
   return Regex("""[+-]?\d+""").findAll(input).map { it.value.toInt() }.toList()
 }
+
+fun extractLongs(input: String): List<Long> {
+  return Regex("""[+-]?\d+""").findAll(input).map { it.value.toLong() }.toList()
+}
+
+fun Int.pow(exp: Int): Int {
+  var result = 1
+  repeat(exp) {
+    result *= this
+  }
+  return result
+}
+
+fun Long.pow(exp: Int): Long {
+  var result = 1L
+  repeat(exp) {
+    result *= this
+  }
+  return result
+}
