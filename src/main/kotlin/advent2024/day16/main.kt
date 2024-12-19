@@ -1,16 +1,12 @@
 package advent2024.day16
 
 import utils.*
-import utils.Input.withInput
 
 fun main() {
   println(solve())
 }
 
-val graph = withInput { input ->
-  val list = input.toList()
-  Array(list.size) { list[it].toCharArray().toTypedArray() }
-}
+val graph = readArrayFromInput()
 
 var minDist = Int.MAX_VALUE
 fun Graph<Char>.distances(start: Point, end: Point, startDirs: List<Direction>): Map<Pair<Point, Direction>, Int> {

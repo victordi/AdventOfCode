@@ -1,6 +1,13 @@
 package utils
 
+import arrow.core.identity
+import utils.Input.readInput
 import kotlin.math.abs
+
+inline fun <reified T> List<String>.parseArray(mapper: (Char) -> T): Array<Array<T>> =
+  Array(size) { this[it].map(mapper).toTypedArray() }
+
+fun readArrayFromInput(): Array<Array<Char>> = readInput().parseArray(::identity)
 
 fun manhattanDistance(p1: Point, p2: Point) = abs(p1.first - p2.first) + abs(p1.second - p2.second)
 operator fun Point.plus(other: Point): Point = Pair(this.first + other.first, this.second + other.second)
@@ -11,11 +18,11 @@ fun <T> Array<Array<T>>.getOrElse(point: Point, default: T): T =
   } catch (e: ArrayIndexOutOfBoundsException) {
     default
   }
+
 operator fun <T> Array<Array<T>>.get(point: Point): T = this[point.first][point.second]
 operator fun <T> Array<Array<T>>.set(point: Point, value: T) {
   this[point.first][point.second] = value
 }
-
 
 fun <T> Array<Array<T>>.getAdjacent(point: Point): List<Pair<Int, Int>> = getAdjacent(point.first, point.second)
 fun <T> Array<Array<T>>.getAdjacent(x: Int, y: Int): List<Pair<Int, Int>> {
@@ -72,28 +79,14 @@ infix fun <T> Array<Array<T>>.arrayEquals(other: Array<Array<T>>): Boolean {
 
 fun <T> Array<Array<T>>.sumOf(transformer: (Pair<Int, Int>) -> Int): Int {
   var result = 0
-  for (i in this.indices)
-    for (j in this[0].indices)
-      result += transformer(i to j)
+  arrayForEach { result += transformer(it) }
   return result
 }
 
-fun <T> Array<Array<T>>.count(predicate: (Pair<Int, Int>) -> Boolean): Int {
-  var result = 0
-  for (i in this.indices)
-    for (j in this[0].indices)
-      if (predicate(i to j)) result++
-  return result
-}
+fun <T> Array<Array<T>>.count(predicate: (Pair<Int, Int>) -> Boolean): Int = sumOf { if (predicate(it)) 1 else 0 }
 
-fun <T> Array<Array<T>>.indexOf(value: T): Point {
-  var result = -1 to -1
-  arrayForEach { (i, j) ->
-    if (this[i][j] == value) {
-      result = i to j
-    }
-  }
-  return result
-}
+fun <T> Array<Array<T>>.indexes(): List<Point> = mutableListOf<Point>().apply { arrayForEach { add(it) } }
+fun <T> Array<Array<T>>.indexOf(value: T): Point = indexesOf(value).firstOrNull() ?: (-1 to -1)
+fun <T> Array<Array<T>>.indexesOf(value: T): List<Point> = indexes().filter { this[it] == value }
 
 inline fun <reified T> Array<Array<T>>.copy(): Array<Array<T>> = map { it.copyOf() }.toTypedArray()
