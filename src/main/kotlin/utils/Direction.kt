@@ -34,6 +34,14 @@ enum class Direction(val diff: Point) {
   fun rotateRight(): Direction = rotate(90)
 
   fun rotateLeft(): Direction = rotate(270)
+
+  fun toChar(): Char = when (this) {
+    North -> '^'
+    South -> 'v'
+    East -> '>'
+    West -> '<'
+    else -> '?'
+  }
 }
 
 fun Char.toDirection() = when (this) {
