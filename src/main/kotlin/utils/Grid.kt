@@ -41,6 +41,8 @@ class Grid<T>(private val grid: List<List<T>>) {
 
   operator fun get(point: Point): T = grid[point.first][point.second]
 
+  fun indexOf(element: T): Point = indexes.find { get(it) == element } ?: error("Element not found.")
+
   fun get(x: Int, y: Int): T = get(x to y)
 
   fun getOrNull(point: Point): T? = grid.getOrNull(point.first)?.getOrNull(point.second)
