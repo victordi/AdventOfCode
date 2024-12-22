@@ -1,5 +1,7 @@
 package utils
 
+import arrow.core.Tuple4
+
 val Any?.println: Unit
   get() = println(this)
 
@@ -34,6 +36,29 @@ fun <T> Iterable<T>.zip3(): List<Triple<T, T, T>> {
     current = next
     next = aux
   }
+  return result
+}
+
+fun <T> Iterable<T>.zip4(): List<Tuple4<T, T, T, T>> {
+  val iterator = iterator()
+  if (!iterator.hasNext()) return emptyList()
+  var first = iterator.next()
+  if (!iterator.hasNext()) return emptyList()
+  var second = iterator.next()
+  if (!iterator.hasNext()) return emptyList()
+  var third = iterator.next()
+  if (!iterator.hasNext()) return emptyList()
+  val result = mutableListOf<Tuple4<T, T, T, T>>()
+  var fourth = iterator.next()
+  while (iterator.hasNext()) {
+    val aux = iterator.next()
+    result.add(Tuple4(first, second, third, fourth))
+    first = second
+    second = third
+    third = fourth
+    fourth = aux
+  }
+  result.add(Tuple4(first, second, third, fourth))
   return result
 }
 
