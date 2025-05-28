@@ -137,3 +137,17 @@ fun Long.pow(exp: Int): Long {
   }
   return result
 }
+
+fun <T> Iterable<T>.permutations(): List<Iterable<T>> {
+  val list = toList()
+  if (list.size == 1) return listOf(list)
+  val result = mutableListOf<List<T>>()
+  list.forEachIndexed { index, t ->
+    val subList = list.toMutableList()
+    subList.removeAt(index)
+    subList.permutations().forEach {
+      result.add(listOf(t) + it)
+    }
+  }
+  return result
+}

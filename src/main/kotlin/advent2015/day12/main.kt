@@ -5,10 +5,13 @@ import utils.Input
 val lines = Input.readInput()
 
 fun main() {
-    println(first())
-    println(second())
+  println(first())
+  println(second())
 }
 
-fun first(): Int = TODO()
+fun String.sumOfNumbers(): Int = Regex("-?\\d+").findAll(this).sumOf { it.value.toInt() }
+fun String.sumOfRedObjects(): Int = Regex("\\{.*?red.*?}").findAll(this).sumOf { it.value.sumOfNumbers() }
 
-fun second(): Int = TODO()
+fun first(): Int = lines.first().sumOfNumbers()
+
+fun second(): Int = lines.first().sumOfNumbers() - lines.first().sumOfRedObjects()
