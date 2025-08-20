@@ -52,6 +52,19 @@ fun <T> Array<Array<T>>.getAdjacentWithCorners(x: Int, y: Int): List<Pair<Int, I
   return result
 }
 
+inline fun <reified T> Array<Array<T>>.shiftRow(i: Int, shift: Int) {
+  val row = this[i]
+  val shiftedRow = row.takeLast(shift) + row.dropLast(shift)
+  this[i] = shiftedRow.toTypedArray()
+}
+
+inline fun <reified T> Array<Array<T>>.shiftColumn(j: Int, shift: Int) {
+  val col = indices.map { this[it][j] }
+  for (i in col.indices) {
+    this[(i + shift) % col.size][j] = col[i]
+  }
+}
+
 fun <T> Array<Array<T>>.prettyPrint() {
   for (i in this.indices) {
     var line = ""
