@@ -151,3 +151,5 @@ fun <T> Iterable<T>.permutations(): List<Iterable<T>> {
   }
   return result
 }
+
+fun String.digits(): List<Int> = filter { it.isDigit() }.map { it.digitToInt() }
