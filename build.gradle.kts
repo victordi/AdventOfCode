@@ -15,6 +15,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("io.arrow-kt","arrow-core","1.1.2")
     implementation("io.arrow-kt:arrow-fx-coroutines:1.1.3")
+    implementation("tools.aqua:z3-turnkey:4.12.2.1")
 
     testImplementation(kotlin("test"))
 }
