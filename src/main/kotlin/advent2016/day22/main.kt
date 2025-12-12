@@ -7,7 +7,7 @@ data class Node(val size: Int, val used: Int, val avail: Int, val usePercent: In
 
 val nodes: Array<Array<Node>> = Array(37) { Array(28) { Node(0, 0, 0, 0) } }
 
-fun readInput() = withInput { input ->
+fun parseInput() = withInput { input ->
   input.drop(2).forEach { line ->
     val regex = Regex("/dev/grid/node-x(\\d+)-y(\\d+)\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)T\\s+(\\d+)%")
     val matchResult = regex.matchEntire(line) ?: throw IllegalArgumentException("Invalid line format: $line")
@@ -17,7 +17,7 @@ fun readInput() = withInput { input ->
 }
 
 fun main() {
-  readInput()
+  parseInput()
   println(first())
   println(second())
 }
