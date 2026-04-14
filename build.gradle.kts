@@ -18,6 +18,8 @@ dependencies {
     implementation("tools.aqua:z3-turnkey:4.12.2.1")
 
     testImplementation(kotlin("test"))
+    testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
+    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
 }
 
 tasks.test {

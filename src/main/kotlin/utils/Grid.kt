@@ -112,6 +112,10 @@ class Grid<T>(private val grid: List<List<T>>) {
       }
     }
 
+  fun count(condition: (T) -> Boolean): Int = fold(0) { acc, element ->
+    if (condition(element)) acc + 1 else acc
+  }
+
   fun <R> foldLinesIndexed(initial: R, f: (Int, R, List<T>) -> R): R = grid.foldIndexed(initial, f)
 
   fun <R> foldLines(initial: R, f: (R, List<T>) -> R): R = grid.fold(initial, f)

@@ -138,6 +138,10 @@ fun Long.pow(exp: Int): Long {
   return result
 }
 
+fun <T, R> Iterable<T>.cartesianProduct(other: Iterable<R>): List<Pair<T, R>> =
+  flatMap { a -> other.map { b -> Pair(a, b) } }
+
+
 fun <T> Iterable<T>.permutations(): List<Iterable<T>> {
   val list = toList()
   if (list.size == 1) return listOf(list)

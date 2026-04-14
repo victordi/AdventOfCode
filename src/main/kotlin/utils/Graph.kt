@@ -36,14 +36,13 @@ fun Graph<Int>.addEdgeBi(from: Int, to: Int, weight: Int) {
 fun Graph<Int>.neighbours(current: Int): Set<Int> =
   this[current].foldIndexed(emptySet()) { idx, acc, e -> if (e != -1 && idx != current) acc + idx else acc }
 
-fun Graph<Int>.dfs(current: Int) {
+fun Graph<Int>.dfs(start: Int, visited: MutableSet<Int>) {
   val stack = Stack<Int>()
-  val visited = mutableSetOf(current)
-  stack.add(current)
+  stack.add(start)
+  visited.add(start)
   while (stack.isNotEmpty()) {
     val node = stack.pop()
-    println("Visiting $node")
-    this.neighbours(node).reversed().forEach { next ->
+    neighbours(node).reversed().forEach { next ->
       if (next !in visited) {
         stack.add(next)
         visited.add(next)
@@ -52,14 +51,13 @@ fun Graph<Int>.dfs(current: Int) {
   }
 }
 
-fun Graph<Int>.bfs(current: Int) {
+fun Graph<Int>.bfs(current: Int, visited: MutableSet<Int>) {
   val queue: Queue<Int> = LinkedList()
-  val visited = mutableSetOf(current)
+  visited.add(current)
   queue.add(current)
   while (queue.isNotEmpty()) {
     val node = queue.poll()
-    println("Visiting $node")
-    this.neighbours(node).forEach { next ->
+    neighbours(node).forEach { next ->
       if (next !in visited) {
         queue.add(next)
         visited.add(next)
